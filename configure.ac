@@ -62,6 +62,7 @@ AC_CONFIG_FILES([
   Makefile
   libgenthrift/configure.h
   libcassandra/configure.h
+  libcassie/configure.h
   ])
 AC_OUTPUT
 

@@ -1,0 +1,19 @@
+# vim:ft=automake
+# included from Top Level Makefile.am
+# All paths should be given relative to the root
+
+EXTRA_DIST+= \
+	     libcassie/configure.h.in
+
+nobase_include_HEADERS+= \
+			 libcassie/cassie.h
+
+lib_LTLIBRARIES+= libcassie/libcassie.la
+libcassie_libcassie_la_CXXFLAGS= ${AM_CXXFLAGS}
+libcassie_libcassie_la_SOURCES = \
+				       libcassie/cassie.cc
+
+libcassie_libcassie_la_DEPENDENCIES= libcassandra/libcassandra.la
+libcassie_libcassie_la_LIBADD= $(LIBM) libcassandra/libcassandra.la
+libcassie_libcassie_la_LDFLAGS= ${AM_LDFLAGS} -version-info ${CASSANDRA_LIBRARY_VERSION}
+

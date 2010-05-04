@@ -1,0 +1,27 @@
+/* 
+ * LibCassie
+ * Copyright (C) 2010 Mina Naguib
+ * All rights reserved.
+ *
+ * Use and distribution licensed under the BSD license.  See
+ * the COPYING file in the parent directory for full text.
+ *
+ */
+
+#ifndef __LIBCASSIE_CONFIGURE_H
+#define __LIBCASSIE_CONFIGURE_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+@DEPRECATED@
+
+#define LIBCASSIE_VERSION_STRING "@VERSION@"
+#define LIBCASSIE_VERSION_HEX @PANDORA_HEX_VERSION@
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __LIBCASSIE_CONFIGURE_H */
