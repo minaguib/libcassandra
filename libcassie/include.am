@@ -11,7 +11,8 @@ nobase_include_HEADERS+= \
 lib_LTLIBRARIES+= libcassie/libcassie.la
 libcassie_libcassie_la_CXXFLAGS= ${AM_CXXFLAGS}
 libcassie_libcassie_la_SOURCES = \
-				       libcassie/cassie.cc
+				       libcassie/cassie.cc \
+				       libcassie/cassie_column.cc
 
 libcassie_libcassie_la_DEPENDENCIES= libcassandra/libcassandra.la
 libcassie_libcassie_la_LIBADD= $(LIBM) libcassandra/libcassandra.la
