@@ -90,6 +90,52 @@ extern "C" {
 		return(cassie->last_error);
 	}
 
+	int cassie_insert_column(
+			cassie_t cassie,
+			const char * keyspace,
+			const char * column_family,
+			const char * key,
+			const char * column_name,
+			const char * value,
+			cassie_consistency_level_t level
+			) {
+
+		Keyspace *key_space;
+
+		try {
+			key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
+			key_space->insertColumn(key, column_family, column_name, value);
+			return(1);
+		}
+		catch (org::apache::cassandra::InvalidRequestException &ire) {
+			_cassie_set_error(cassie, "Exception: %s", ire.why.c_str());
+			return(0);
+		}
+
+	}
+
+	char * cassie_get_column_value(
+			cassie_t cassie,
+			const char * keyspace,
+			const char * column_family,
+			const char * key,
+			const char * column_name,
+			cassie_consistency_level_t level
+			) {
+
+		Keyspace *key_space;
+
+		try {
+			key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
+			string res = key_space->getColumnValue(key, column_family, column_name);
+			return(strdup(res.c_str()));
+		}
+		catch (org::apache::cassandra::InvalidRequestException &ire) {
+			_cassie_set_error(cassie, "Exception: %s", ire.why.c_str());
+			return(NULL);
+		}
+	}
+
 	/* PRIVATE */
 
 	void _cassie_set_error(cassie_t cassie, const char * format, ...) {

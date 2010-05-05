@@ -33,6 +33,24 @@ extern "C" {
 	void cassie_print_debug(cassie_t cassie);
 	char * cassie_last_error(cassie_t cassie);
 
+	int cassie_insert_column(
+			cassie_t cassie,
+			const char * keyspace,
+			const char * column_family,
+			const char * key,
+			const char * column_name,
+			const char * value,
+			cassie_consistency_level_t level
+			);
+	char * cassie_get_column_value(
+			cassie_t cassie,
+			const char * keyspace,
+			const char * column_family,
+			const char * key,
+			const char * column_name,
+			cassie_consistency_level_t level
+			);
+
 #ifdef __cplusplus
 }
 #endif
