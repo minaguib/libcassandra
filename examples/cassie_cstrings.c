@@ -3,6 +3,16 @@
 #include <stdlib.h>
 #include <cassie.h>
 
+/*
+ * Demonstrates talking to cassandra using the C libcassie
+ *
+ * This particular example uses the simpler interface which does not
+ * support the "binary" nature of column names and values in cassandra
+ *
+ * See cassie_blobs.c for the richer interface
+ *
+ */
+
 int main(int argc, char ** argv) {
 
 	cassie_t cassie;
