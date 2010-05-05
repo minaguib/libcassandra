@@ -39,6 +39,7 @@ namespace libcassie {
 		cassie_t cassie_init(const char * host, int port);
 		void cassie_free(cassie_t cassie);
 
+		/* Represents a column.  Used as input/output to the blob insert/get functions */
 		cassie_column_t cassie_column_init(
 				cassie_t cassie,
 				const char * name,
@@ -49,6 +50,7 @@ namespace libcassie {
 				);
 		void cassie_column_free(cassie_column_t column);
 
+		/* Insert/get when with full blob support */
 		int cassie_insert_column(
 				cassie_t cassie,
 				const char * keyspace,
@@ -67,6 +69,7 @@ namespace libcassie {
 				cassie_consistency_level_t level
 				);
 
+		/* insert/get when you're dealing with C null-terminated strings */
 		int cassie_insert_column_value(
 				cassie_t cassie,
 				const char * keyspace,
@@ -85,6 +88,7 @@ namespace libcassie {
 				cassie_consistency_level_t level
 				);
 
+		/* Self-explanatory */
 		char * cassie_last_error(cassie_t cassie);
 		void cassie_print_debug(cassie_t cassie);
 
