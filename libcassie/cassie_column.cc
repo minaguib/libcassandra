@@ -8,16 +8,14 @@
  */
 
 #include <stdlib.h>
-#include "cassie.h"
 #include <libcassandra/cassandra.h>
+
+#include "cassie.h"
+#include "cassie_column.h"
 
 namespace libcassie {
 
 	using namespace std;
-
-	/* Private */
-	void cassie_set_error(cassie_t cassie, const char * format, ...);
-	cassie_column_t cassie_column_convert(cassie_t cassie, org::apache::cassandra::Column cpp_column);
 
 	extern "C" {
 
@@ -89,7 +87,7 @@ namespace libcassie {
 	} // extern "C"
 
 
-	// Private - not accessible from C-land
+	// Not for public consumption, not in C space:
 
 	cassie_column_t cassie_column_convert(cassie_t cassie, org::apache::cassandra::Column cpp_column) {
 		return(

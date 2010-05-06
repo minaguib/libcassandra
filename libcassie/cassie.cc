@@ -7,25 +7,21 @@
  * the COPYING file in the parent directory for full text.
  */
 
+#include <iostream>
+#include <libcassandra/cassandra_factory.h>
+#include <libcassandra/cassandra.h>
+#include <libcassandra/keyspace.h>
+
 #include <stdarg.h>
 #include <stdlib.h>
 
 #include "cassie.h"
-
-#include <iostream>
-
-#include <libcassandra/cassandra_factory.h>
-#include <libcassandra/cassandra.h>
-#include <libcassandra/keyspace.h>
+#include "cassie_column.h"
 
 namespace libcassie {
 
 	using namespace std;
 	using namespace libcassandra;
-
-	/* Private */
-	void cassie_set_error(cassie_t cassie, const char * format, ...);
-	cassie_column_t cassie_column_convert(cassie_t cassie, org::apache::cassandra::Column cpp_column);
 
 	extern "C" {
 
@@ -193,7 +189,7 @@ namespace libcassie {
 	} // extern "C"
 
 
-	// Private - not accessible from C-land
+	// Not for public consumption, not in C space:
 
 	void cassie_set_error(cassie_t cassie, const char * format, ...) {
 

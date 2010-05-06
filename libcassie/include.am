@@ -6,7 +6,9 @@ EXTRA_DIST+= \
 	     libcassie/configure.h.in
 
 nobase_include_HEADERS+= \
-			 libcassie/cassie.h
+			 libcassie/cassie.h \
+			 libcassie/cassie_types.h \
+			 libcassie/cassie_column.h
 
 lib_LTLIBRARIES+= libcassie/libcassie.la
 libcassie_libcassie_la_CXXFLAGS= ${AM_CXXFLAGS}

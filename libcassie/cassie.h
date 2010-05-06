@@ -11,44 +11,16 @@
 #ifndef __LIBCASSIE_H
 #define __LIBCASSIE_H
 
+#include "cassie_types.h"
+
 #ifdef __cplusplus
 namespace libcassie {
+
 	extern "C" {
 #endif
 
-		typedef struct _cassie * cassie_t;
-
-		typedef struct _cassie_column {
-			char * name;
-			size_t name_len;
-			char * value;
-			size_t value_len;
-			int64_t timestamp;
-		} * cassie_column_t;
-
-		typedef enum {
-			CASSIE_CONSISTENCY_LEVEL_ZERO          =  0,
-			CASSIE_CONSISTENCY_LEVEL_ONE           =  1,
-			CASSIE_CONSISTENCY_LEVEL_QUORUM        =  2,
-			CASSIE_CONSISTENCY_LEVEL_DCQUORUM      =  3,
-			CASSIE_CONSISTENCY_LEVEL_DCQUORUMSYNC  =  4,
-			CASSIE_CONSISTENCY_LEVEL_ALL           =  5,
-			CASSIE_CONSISTENCY_LEVEL_ANY           =  6
-		} cassie_consistency_level_t;
-
 		cassie_t cassie_init(const char * host, int port);
 		void cassie_free(cassie_t cassie);
-
-		/* Represents a column.  Used as input/output to the blob insert/get functions */
-		cassie_column_t cassie_column_init(
-				cassie_t cassie,
-				const char * name,
-				size_t name_len,
-				const char * value,
-				size_t value_len,
-				int64_t timestamp
-				);
-		void cassie_column_free(cassie_column_t column);
 
 		/* Insert/get when with full blob support */
 		int cassie_insert_column(
@@ -94,6 +66,10 @@ namespace libcassie {
 
 #ifdef __cplusplus
 	}
+
+	/* Not for public consumption, not in C space: */
+	void cassie_set_error(cassie_t cassie, const char * format, ...);
+
 }
 #endif
 
