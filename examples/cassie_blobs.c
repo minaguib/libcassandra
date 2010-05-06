@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cassie.h>
+#include <cassie_column.h>
 
 /*
  * Demonstrates talking to cassandra using the C libcassie
@@ -16,7 +17,6 @@ int main(int argc, char ** argv) {
 
 	cassie_t cassie;
 	int i = 0, j = 0, k = 0;
-	char * v;
 	cassie_column_t col_in;
 	cassie_column_t col_out;
 
