@@ -14,9 +14,17 @@
 #ifdef __cplusplus
 namespace libcassie {
 
+	struct _cassie {
+		char *														host;
+		int															port;
+		char *														last_error;
+		std::tr1::shared_ptr<libcassandra::Cassandra>	cassandra;
+	};
+
 	extern "C" {
 #endif
 
+		struct _cassie;
 		typedef struct _cassie * cassie_t;
 
 		typedef enum {
