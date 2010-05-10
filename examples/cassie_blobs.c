@@ -34,6 +34,10 @@ int main(int argc, char ** argv) {
 					"age\r\n", 5,
 					"40\r\n", 4,
 					0);
+			if (!col_in) {
+				printf("ERROR: %s\n", cassie_last_error(cassie));
+				exit(0);
+			}
 
 			k = cassie_insert_column(
 					cassie,
@@ -43,7 +47,9 @@ int main(int argc, char ** argv) {
 					col_in,
 					CASSIE_CONSISTENCY_LEVEL_ONE
 					);
+
 			cassie_column_free(col_in);
+
 			if (!k) {
 				printf("ERROR: %s\n", cassie_last_error(cassie));
 				exit(0);
@@ -61,15 +67,15 @@ int main(int argc, char ** argv) {
 			// Validate
 			if (
 					col_out &&
-					col_out->name_len == 5 &&
-					memcmp(col_out->name, "age\r\n", 5) == 0 &&
-					col_out->value_len == 4 &&
-					memcmp(col_out->value, "40\r\n", 4) == 0
+					col_out->name->length == 5 &&
+					memcmp(col_out->name->data, "age\r\n", 5) == 0 &&
+					col_out->value->length == 4 &&
+					memcmp(col_out->value->data, "40\r\n", 4) == 0
 					) {
 				printf(".");
 			}
 			else {
-				printf("BAD OUTPUT COLUMP\n");
+				printf("BAD OUTPUT COLUMN\n");
 				exit(1);
 			}
 

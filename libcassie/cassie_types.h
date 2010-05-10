@@ -24,8 +24,12 @@ namespace libcassie {
 	extern "C" {
 #endif
 
-		struct _cassie;
 		typedef struct _cassie * cassie_t;
+
+		typedef struct _cassie_blob {
+			char * data;
+			size_t length;
+		} * cassie_blob_t;
 
 		typedef enum {
 			CASSIE_CONSISTENCY_LEVEL_ZERO          =  0,
@@ -39,10 +43,8 @@ namespace libcassie {
 
 		/* Represents a column.  Used as input/output to the blob insert/get functions */
 		typedef struct _cassie_column {
-			char * name;
-			size_t name_len;
-			char * value;
-			size_t value_len;
+			cassie_blob_t name;
+			cassie_blob_t value;
 			int64_t timestamp;
 		} * cassie_column_t;
 

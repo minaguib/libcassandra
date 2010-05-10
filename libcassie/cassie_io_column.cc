@@ -13,6 +13,7 @@
 
 #include "cassie.h"
 #include "cassie_column.h"
+#include "cassie_blob.h"
 #include "cassie_io_column.h"
 
 namespace libcassie {
@@ -32,8 +33,8 @@ namespace libcassie {
 				) {
 
 			Keyspace *key_space;
-			string column_name(column->name, column->name_len);
-			string value(column->value, column->value_len);
+			string column_name(column->name->data, column->name->length);
+			string value(column->value->data, column->value->length);
 
 			try {
 				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
@@ -46,6 +47,7 @@ namespace libcassie {
 			}
 
 		}
+
 
 		cassie_column_t cassie_get_column(
 				cassie_t cassie,
