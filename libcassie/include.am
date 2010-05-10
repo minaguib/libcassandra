@@ -10,7 +10,9 @@ nobase_include_HEADERS+= \
 			 libcassie/cassie_types.h \
 			 libcassie/cassie_blob.h \
 			 libcassie/cassie_io_column.h \
-			 libcassie/cassie_column.h
+			 libcassie/cassie_io_super_column.h \
+			 libcassie/cassie_column.h \
+			 libcassie/cassie_super_column.h
 
 lib_LTLIBRARIES+= libcassie/libcassie.la
 libcassie_libcassie_la_CXXFLAGS= ${AM_CXXFLAGS}
@@ -18,7 +20,9 @@ libcassie_libcassie_la_SOURCES = \
 				       libcassie/cassie.cc \
 				       libcassie/cassie_blob.cc \
 				       libcassie/cassie_io_column.cc \
-				       libcassie/cassie_column.cc
+				       libcassie/cassie_io_super_column.cc \
+				       libcassie/cassie_column.cc \
+				       libcassie/cassie_super_column.cc
 
 libcassie_libcassie_la_DEPENDENCIES= libcassandra/libcassandra.la
 libcassie_libcassie_la_LIBADD= $(LIBM) libcassandra/libcassandra.la

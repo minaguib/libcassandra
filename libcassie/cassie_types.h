@@ -48,6 +48,12 @@ namespace libcassie {
 			int64_t timestamp;
 		} * cassie_column_t;
 
+		typedef struct _cassie_super_column {
+			cassie_blob_t 		name;
+			cassie_column_t	* columns;
+			unsigned int 		num_columns;
+		} * cassie_super_column_t;
+
 #ifdef __cplusplus
 	}
 }

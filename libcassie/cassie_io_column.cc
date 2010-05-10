@@ -76,6 +76,9 @@ namespace libcassie {
 				org::apache::cassandra::Column cpp_column = key_space->getColumn(key, column_family, cpp_super_column_name, cpp_column_name);
 				return(cassie_column_convert(cassie, cpp_column));
 			}
+			catch (org::apache::cassandra::NotFoundException &nfe) {
+				return(NULL);
+			}
 			catch (org::apache::cassandra::InvalidRequestException &ire) {
 				cassie_set_error(cassie, "Exception: %s", ire.why.c_str());
 				return(NULL);
@@ -129,6 +132,9 @@ namespace libcassie {
 				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
 				string res = key_space->getColumnValue(key, column_family, super_column_name, column_name);
 				return(strdup(res.c_str()));
+			}
+			catch (org::apache::cassandra::NotFoundException &nfe) {
+				return(NULL);
 			}
 			catch (org::apache::cassandra::InvalidRequestException &ire) {
 				cassie_set_error(cassie, "Exception: %s", ire.why.c_str());
