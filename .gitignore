@@ -2,6 +2,7 @@
 *.o
 *.la
 *.lo
+*.swp
 
 /libtool
 /stamp-h1
