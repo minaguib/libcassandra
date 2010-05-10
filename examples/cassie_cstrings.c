@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cassie.h>
+#include <cassie_io_column.h>
 
 /*
  * Demonstrates talking to cassandra using the C libcassie
@@ -33,6 +34,7 @@ int main(int argc, char ** argv) {
 					"Keyspace1",
 					"Standard2",
 					"joe",
+					NULL,
 					"age",
 					"20",
 					CASSIE_CONSISTENCY_LEVEL_ONE
@@ -48,6 +50,7 @@ int main(int argc, char ** argv) {
 					"Keyspace1",
 					"Standard2",
 					"joe",
+					NULL,
 					"age",
 					CASSIE_CONSISTENCY_LEVEL_ONE
 				);

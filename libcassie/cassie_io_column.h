@@ -25,6 +25,7 @@ namespace libcassie {
 				const char * keyspace,
 				const char * column_family,
 				const char * key,
+				cassie_blob_t super_column_name,
 				cassie_column_t column,
 				cassie_consistency_level_t level
 				);
@@ -34,8 +35,8 @@ namespace libcassie {
 				const char * keyspace,
 				const char * column_family,
 				const char * key,
-				const char * column_name,
-				size_t column_name_len,
+				cassie_blob_t super_column_name,
+				cassie_blob_t column_name,
 				cassie_consistency_level_t level
 				);
 
@@ -45,6 +46,7 @@ namespace libcassie {
 				const char * keyspace,
 				const char * column_family,
 				const char * key,
+				const char * super_column_name,
 				const char * column_name,
 				const char * value,
 				cassie_consistency_level_t level
@@ -54,6 +56,7 @@ namespace libcassie {
 				const char * keyspace,
 				const char * column_family,
 				const char * key,
+				const char * super_column_name,
 				const char * column_name,
 				cassie_consistency_level_t level
 				);

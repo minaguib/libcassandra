@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <cassie.h>
 #include <cassie_column.h>
+#include <cassie_blob.h>
+#include <cassie_io_column.h>
 
 /*
  * Demonstrates talking to cassandra using the C libcassie
@@ -17,8 +19,12 @@ int main(int argc, char ** argv) {
 
 	cassie_t cassie;
 	int i = 0, j = 0, k = 0;
+	cassie_blob_t age, fourty;
 	cassie_column_t col_in;
 	cassie_column_t col_out;
+
+	age = cassie_blob_init("age\r\n", 5);
+	fourty = cassie_blob_init("40\r\n", 4);
 
 	while (++i) {
 
@@ -31,8 +37,8 @@ int main(int argc, char ** argv) {
 			// Prep write blob
 			col_in = cassie_column_init(
 					cassie,
-					"age\r\n", 5,
-					"40\r\n", 4,
+					age->data, age->length,
+					fourty->data, fourty->length,
 					0);
 			if (!col_in) {
 				printf("ERROR: %s\n", cassie_last_error(cassie));
@@ -44,6 +50,7 @@ int main(int argc, char ** argv) {
 					"Keyspace1",
 					"Standard2",
 					"joe",
+					NULL,
 					col_in,
 					CASSIE_CONSISTENCY_LEVEL_ONE
 					);
@@ -60,17 +67,18 @@ int main(int argc, char ** argv) {
 					"Keyspace1",
 					"Standard2",
 					"joe",
-					"age\r\n", 5,
+					NULL,
+					age,
 					CASSIE_CONSISTENCY_LEVEL_ONE
 				);
 
 			// Validate
 			if (
 					col_out &&
-					col_out->name->length == 5 &&
-					memcmp(col_out->name->data, "age\r\n", 5) == 0 &&
-					col_out->value->length == 4 &&
-					memcmp(col_out->value->data, "40\r\n", 4) == 0
+					col_out->name->length == age->length &&
+					memcmp(col_out->name->data, age->data, age->length) == 0 &&
+					col_out->value->length == fourty->length &&
+					memcmp(col_out->value->data, fourty->data, fourty->length) == 0
 					) {
 				printf(".");
 			}
@@ -86,6 +94,9 @@ int main(int argc, char ** argv) {
 		cassie_free(cassie);
 		cassie = NULL;
 	}
+
+	cassie_blob_free(fourty);
+	cassie_blob_free(age);
 
 	return(0);
 }
