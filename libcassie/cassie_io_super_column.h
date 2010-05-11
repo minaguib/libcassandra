@@ -15,10 +15,12 @@
 
 #ifdef __cplusplus
 namespace libcassie {
-
 	extern "C" {
 #endif
 
+		/* Retrieves an entire super column from cassandra
+		 * Call cassie_super_column_free() when you're done with it
+		 */
 		cassie_super_column_t cassie_get_super_column(
 				cassie_t cassie,
 				const char * keyspace,

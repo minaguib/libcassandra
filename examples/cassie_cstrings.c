@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cassie.h>
+#include <cassie_blob.h>
 #include <cassie_io_column.h>
 
 /*
@@ -29,14 +30,14 @@ int main(int argc, char ** argv) {
 		for (j = 0; j < 10000; j++) {
 
 			// Write via friendly C-strings
-			k = cassie_insert_column_value(
+			k = cassie_insert_column(
 					cassie,
 					"Keyspace1",
 					"Standard2",
 					"joe",
 					NULL,
-					"age",
-					"20",
+					CASSIE_C2B("age"),
+					CASSIE_C2B("20"),
 					CASSIE_CONSISTENCY_LEVEL_ONE
 					);
 			if (!k) {
@@ -51,7 +52,7 @@ int main(int argc, char ** argv) {
 					"Standard2",
 					"joe",
 					NULL,
-					"age",
+					CASSIE_C2B("age"),
 					CASSIE_CONSISTENCY_LEVEL_ONE
 				);
 			// Validate

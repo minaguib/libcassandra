@@ -20,7 +20,6 @@ int main(int argc, char ** argv) {
 	cassie_t cassie;
 	int i = 0, j = 0, k = 0;
 	cassie_blob_t age, fourty;
-	cassie_column_t col_in;
 	cassie_column_t col_out;
 
 	age = cassie_blob_init("age\r\n", 5);
@@ -34,28 +33,16 @@ int main(int argc, char ** argv) {
 		printf("Cassie generation %d: ", i);
 		for (j = 0; j < 10000; j++) {
 
-			// Prep write blob
-			col_in = cassie_column_init(
-					cassie,
-					age->data, age->length,
-					fourty->data, fourty->length,
-					0);
-			if (!col_in) {
-				printf("ERROR: %s\n", cassie_last_error(cassie));
-				exit(0);
-			}
-
 			k = cassie_insert_column(
 					cassie,
 					"Keyspace1",
 					"Standard2",
 					"joe",
 					NULL,
-					col_in,
+					age,
+					fourty,
 					CASSIE_CONSISTENCY_LEVEL_ONE
 					);
-
-			cassie_column_free(col_in);
 
 			if (!k) {
 				printf("ERROR: %s\n", cassie_last_error(cassie));

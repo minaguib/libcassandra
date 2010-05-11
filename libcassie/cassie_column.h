@@ -19,21 +19,27 @@ namespace libcassie {
 	extern "C" {
 #endif
 
+		/* Initializes a representation of a column (name + value + timestamp)
+		 * Call cassie_column_free when done with it
+		 */
 		cassie_column_t cassie_column_init(
 				cassie_t cassie,
-				const char * name,
-				size_t name_len,
-				const char * value,
-				size_t value_len,
+				cassie_blob_t name,
+				cassie_blob_t value,
 				int64_t timestamp
 				);
+
+		/* Free a column that was initialized by cassie_column_init */
 		void cassie_column_free(cassie_column_t column);
 
 #ifdef __cplusplus
 	}
 
 	// Not for public consumption, not in C space:
-	cassie_column_t cassie_column_convert(cassie_t cassie, org::apache::cassandra::Column cpp_column);
+	cassie_column_t cassie_column_convert(
+			cassie_t cassie,
+			org::apache::cassandra::Column cpp_column
+			);
 
 }
 #endif

@@ -15,17 +15,20 @@
 
 #ifdef __cplusplus
 namespace libcassie {
-
 	extern "C" {
 #endif
 
+		/* Frees a super column, typically returned with cassie_get_super_column */
 		void cassie_super_column_free(cassie_super_column_t supercol);
 
 #ifdef __cplusplus
 	}
 
 	// Not for public consumption, not in C space:
-	cassie_super_column_t cassie_super_column_convert(cassie_t cassie, org::apache::cassandra::SuperColumn cpp_super_column);
+	cassie_super_column_t cassie_super_column_convert(
+			cassie_t cassie,
+			org::apache::cassandra::SuperColumn cpp_super_column
+			);
 
 }
 #endif

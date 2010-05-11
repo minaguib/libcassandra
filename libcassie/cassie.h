@@ -19,7 +19,12 @@ namespace libcassie {
 	extern "C" {
 #endif
 
+		/* Initializes a new cassiee object
+		 * Use cassie_free when done with it
+		 */
 		cassie_t cassie_init(const char * host, int port);
+
+		/* Frees a cassie object initialied with cassie_init */
 		void cassie_free(cassie_t cassie);
 
 		/* Self-explanatory */

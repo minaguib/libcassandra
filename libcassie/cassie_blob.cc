@@ -32,12 +32,13 @@ namespace libcassie {
 
 			blob->length = length;
 			if (length > 0) {
-				blob->data = (char*)malloc(length);
+				blob->data = (char*)malloc(length + 1);
 				if (!(blob->data)) {
 					cassie_blob_free(blob);
 					return(NULL);
 				}
 				memcpy(blob->data, data, length);
+				blob->data[length] = 0;
 			}
 
 			return(blob);
