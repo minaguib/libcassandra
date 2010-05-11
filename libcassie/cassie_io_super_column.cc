@@ -33,7 +33,7 @@ namespace libcassie {
 				) {
 
 			Keyspace *key_space;
-			string cpp_super_column_name(super_column_name->data, super_column_name->length);
+			string cpp_super_column_name(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
 
 			try {
 				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);

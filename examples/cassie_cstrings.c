@@ -36,8 +36,8 @@ int main(int argc, char ** argv) {
 					"Standard2",
 					"joe",
 					NULL,
-					CASSIE_C2B("age"),
-					CASSIE_C2B("20"),
+					CASSIE_CTOB("age"),
+					CASSIE_CTOB("20"),
 					CASSIE_CONSISTENCY_LEVEL_ONE
 					);
 			if (!k) {
@@ -52,7 +52,7 @@ int main(int argc, char ** argv) {
 					"Standard2",
 					"joe",
 					NULL,
-					CASSIE_C2B("age"),
+					CASSIE_CTOB("age"),
 					CASSIE_CONSISTENCY_LEVEL_ONE
 				);
 			// Validate

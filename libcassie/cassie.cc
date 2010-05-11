@@ -46,10 +46,10 @@ namespace libcassie {
 
 			if (cassie->host) {
 				free(cassie->host);
+				cassie->host = NULL;
 			}
-			if (cassie->last_error) {
-				free(cassie->last_error);
-			}
+			cassie_set_error(cassie, NULL);
+
 			delete(cassie);
 
 		}
@@ -92,9 +92,11 @@ namespace libcassie {
 			cassie->last_error = NULL;
 		}
 
-		va_start(ap, format);
-		vasprintf(&(cassie->last_error), format, ap);
-		va_end(ap);
+		if (format != NULL) {
+			va_start(ap, format);
+			vasprintf(&(cassie->last_error), format, ap);
+			va_end(ap);
+		}
 
 	}
 

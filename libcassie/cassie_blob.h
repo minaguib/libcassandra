@@ -19,15 +19,19 @@ namespace libcassie {
 #endif
 
 		/* Allows in-line conversion of C string to cassie_blob_t */
-#define CASSIE_C2B(cstr) (cstr == NULL ? (&(struct _cassie_blob){NULL, 0}) : (&(struct _cassie_blob){(cstr), strlen(cstr)}))
+#define CASSIE_CTOB(cstr) (cstr == NULL ? (&(struct _cassie_blob){NULL, 0}) : (&(struct _cassie_blob){(cstr), strlen(cstr)}))
 
-		/* Allows in-line conversion of a cassie_blob_t to a C-string
-		 * Notice that this MAY BE LOSSY.  If the blob already contains a NULL character, your use of it as a C-string will be terminated
-		 * at that point.
-		 * IF the blob does not contain a NULL, cassie_blob_init will ensure there's a NULL sitting at its end, so reading it like a C string
+		/* Returns the underlying data of the blob
+		 * Notice that if you treat this as a C string, it will be safe but may be LOSSY:
+		 * If the blob already contains a NULL character, your use of it as a C-string will be terminated at that point.
+		 * If the blob does not contain a NULL, cassie_blob_init will ensure there's a NULL sitting at its end, so reading it like a C string
 		 * will not read past allocation.
 		 */
-#define CASSIE_B2C(blob) (blob->data)
+#define CASSIE_BDATA(blob) (blob->data)
+
+		/* Returns the underlying length of the blob
+		 */
+#define CASSIE_BLENGTH(blob) (blob->length)
 
 		/* Initializes a blob
 		 * Use cassie_blob_free when you're done with it

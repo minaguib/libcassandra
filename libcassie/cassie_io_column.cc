@@ -37,10 +37,10 @@ namespace libcassie {
 			Keyspace *key_space;
 			string(cpp_super_column_name);
 			if (super_column_name != NULL) {
-				cpp_super_column_name.assign(super_column_name->data, super_column_name->length);
+				cpp_super_column_name.assign(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
 			}
-			string cpp_column_name(column_name->data, column_name->length);
-			string cpp_value(value->data, value->length);
+			string cpp_column_name(CASSIE_BDATA(column_name), CASSIE_BLENGTH(column_name));
+			string cpp_value(CASSIE_BDATA(value), CASSIE_BLENGTH(value));
 
 			try {
 				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
@@ -67,9 +67,9 @@ namespace libcassie {
 			Keyspace *key_space;
 			string(cpp_super_column_name);
 			if (super_column_name  != NULL) {
-				cpp_super_column_name.assign(super_column_name->data, super_column_name->length);
+				cpp_super_column_name.assign(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
 			}
-			string cpp_column_name(column_name->data, column_name->length);
+			string cpp_column_name(CASSIE_BDATA(column_name), CASSIE_BLENGTH(column_name));
 
 			try {
 				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
@@ -99,7 +99,7 @@ namespace libcassie {
 			cassie_column_t column = cassie_get_column(cassie, keyspace, column_family, key, super_column_name, column_name, level);
 
 			if (column) {
-				value = strdup(CASSIE_B2C(column->value));
+				value = strdup(CASSIE_BDATA(column->value));
 				cassie_column_free(column);
 			}
 

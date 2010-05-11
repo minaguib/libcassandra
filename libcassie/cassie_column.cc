@@ -21,29 +21,6 @@ namespace libcassie {
 
 	extern "C" {
 
-		cassie_column_t cassie_column_init(
-				cassie_t cassie,
-				cassie_blob_t name,
-				cassie_blob_t value,
-				int64_t timestamp
-				) {
-
-			cassie_column_t column = NULL;
-
-			column = (cassie_column_t) malloc(sizeof(struct _cassie_column));
-			if (!column) {
-				cassie_set_error(cassie, "Failed to allocate %u bytes for new struct _cassie_column", sizeof(struct _cassie_column));
-				return(NULL);
-			}
-
-			column->name = name;
-			column->value = value;
-			column->timestamp = timestamp;
-
-			return(column);
-
-		}
-
 		void cassie_column_free(cassie_column_t column) {
 			if (!column) return;
 			if (column->name) {
@@ -61,6 +38,29 @@ namespace libcassie {
 
 
 	// Not for public consumption, not in C space:
+
+	cassie_column_t cassie_column_init(
+			cassie_t cassie,
+			cassie_blob_t name,
+			cassie_blob_t value,
+			int64_t timestamp
+			) {
+
+		cassie_column_t column = NULL;
+
+		column = (cassie_column_t) malloc(sizeof(struct _cassie_column));
+		if (!column) {
+			cassie_set_error(cassie, "Failed to allocate %u bytes for new struct _cassie_column", sizeof(struct _cassie_column));
+			return(NULL);
+		}
+
+		column->name = name;
+		column->value = value;
+		column->timestamp = timestamp;
+
+		return(column);
+
+	}
 
 	cassie_column_t cassie_column_convert(cassie_t cassie, org::apache::cassandra::Column cpp_column) {
 		cassie_blob_t name = cassie_blob_init(cpp_column.name.data(), cpp_column.name.length());

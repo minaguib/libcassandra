@@ -28,9 +28,9 @@ int main(int argc, char ** argv) {
 				"Keyspace1", \
 				"Super2", \
 				"joe", \
-				CASSIE_C2B("friends"), \
-				CASSIE_C2B(name), \
-				CASSIE_C2B("Happy"), \
+				CASSIE_CTOB("friends"), \
+				CASSIE_CTOB(name), \
+				CASSIE_CTOB("Happy"), \
 				CASSIE_CONSISTENCY_LEVEL_ONE \
 				)) { \
 		printf("Failed to insert: %s\n", cassie_last_error(cassie)); \
@@ -43,7 +43,7 @@ int main(int argc, char ** argv) {
 
 	while (++i) {
 
-		supercol = cassie_get_super_column(cassie, "Keyspace1", "Super2", "joe", CASSIE_C2B("friends"), CASSIE_CONSISTENCY_LEVEL_ONE);
+		supercol = cassie_get_super_column(cassie, "Keyspace1", "Super2", "joe", CASSIE_CTOB("friends"), CASSIE_CONSISTENCY_LEVEL_ONE);
 		if (!supercol) {
 			printf("Failed to get super column: %s\n", cassie_last_error(cassie));
 			exit(1);
