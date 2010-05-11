@@ -6,21 +6,25 @@
 /*
  * Demonstrates talking to cassandra using the C libcassie
  *
- * This particular example manually uses cassie_column_t for inputs and outputs
- * to support the "binary" nature of column names and values in cassandra
+ * This particular example demonstrates various aspects of working with blobs:
+ * * Using the cassie_blob_init/cassie_blob_free
+ * * Using CASSIE_CTOB, CASSIE_BDATA, CASSIE_BLENGTH
  *
- * See cassie_cstrings.c for a simpler, C-compliant-strings interface
  */
 
 int main(int argc, char ** argv) {
 
 	cassie_t cassie;
 	int i = 0, j = 0, k = 0;
-	cassie_blob_t age, fourty;
+	cassie_blob_t image;
 	cassie_column_t col_out;
+	char gif[] = {
+		0x47,0x49,0x46,0x38,0x37,0x61,0x01,0x00,0x01,0x00,0x80,0x00,0x00,0xff,0xff,0xff,
+		0xff,0xff,0xff,0x2c,0x00,0x00,0x00,0x00,0x01,0x00,0x01,0x00,0x00,0x02,0x02,0x44,
+		0x01,0x00,0x3b
+	};
 
-	age = cassie_blob_init("age\r\n", 5);
-	fourty = cassie_blob_init("40\r\n", 4);
+	image = cassie_blob_init(gif, 35);
 
 	while (++i) {
 
@@ -36,8 +40,8 @@ int main(int argc, char ** argv) {
 					"Standard2",
 					"joe",
 					NULL,
-					age,
-					fourty,
+					CASSIE_CTOB("pic"),
+					image,
 					CASSIE_CONSISTENCY_LEVEL_ONE
 					);
 
@@ -52,17 +56,21 @@ int main(int argc, char ** argv) {
 					"Standard2",
 					"joe",
 					NULL,
-					age,
+					CASSIE_CTOB("pic"),
 					CASSIE_CONSISTENCY_LEVEL_ONE
 				);
 
 			// Validate
 			if (
+
 					col_out &&
-					col_out->name->length == age->length &&
-					memcmp(col_out->name->data, age->data, age->length) == 0 &&
-					col_out->value->length == fourty->length &&
-					memcmp(col_out->value->data, fourty->data, fourty->length) == 0
+
+					CASSIE_BLENGTH(col_out->name) == 3 &&
+					strcmp(CASSIE_BDATA(col_out->name), "pic") == 0 &&
+
+					CASSIE_BLENGTH(col_out->value) == CASSIE_BLENGTH(image) &&
+					memcmp(CASSIE_BDATA(col_out->value), CASSIE_BDATA(image), CASSIE_BLENGTH(image)) == 0
+
 					) {
 				printf(".");
 			}
@@ -79,8 +87,7 @@ int main(int argc, char ** argv) {
 		cassie = NULL;
 	}
 
-	cassie_blob_free(fourty);
-	cassie_blob_free(age);
+	cassie_blob_free(image);
 
 	return(0);
 }

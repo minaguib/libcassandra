@@ -6,10 +6,9 @@
 /*
  * Demonstrates talking to cassandra using the C libcassie
  *
- * This particular example uses the simpler interface which does not
- * support the "binary" nature of column names and values in cassandra
- *
- * See cassie_blobs.c for the richer interface
+ * This particular example shows the usage of the macros
+ * CASSIE_CTOB, CASSIE_BDATA and CASSIE_BLENGTH
+ * to avoid manually constructing blobs using cassie_blob_init/cassie_blob_free
  *
  */
 

@@ -5,6 +5,8 @@
 
 /*
  * Demonstrates talking to cassandra using the C libcassie
+ *
+ * This particular example shows supercolumn support
  */
 
 int main(int argc, char ** argv) {
@@ -32,8 +34,8 @@ int main(int argc, char ** argv) {
 		exit(1); \
 	}
 
-	ADDFRIEND("Bob");
 	ADDFRIEND("Albert");
+	ADDFRIEND("Bob");
 	ADDFRIEND("Vincent");
 
 	while (++i) {
@@ -45,7 +47,13 @@ int main(int argc, char ** argv) {
 		}
 
 		// Validate
-		if (supercol->num_columns == 3) {
+		if (
+				supercol->num_columns == 3 &&
+
+				strcmp(CASSIE_BDATA(supercol->columns[0]->name), "Albert") == 0 &&
+				strcmp(CASSIE_BDATA(supercol->columns[1]->name), "Bob") == 0 &&
+				strcmp(CASSIE_BDATA(supercol->columns[2]->name), "Vincent") == 0
+				) {
 			printf(".");
 		}
 		else {
