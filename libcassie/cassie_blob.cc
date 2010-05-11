@@ -52,6 +52,14 @@ namespace libcassie {
 			free(blob);
 		}
 
+		char * cassie_blob_get_data(cassie_blob_t blob) {
+			return(blob->data);
+		}
+
+		size_t cassie_blob_get_length(cassie_blob_t blob) {
+			return(blob->length);
+		}
+
 
 	} // extern "C"
 } // namespace libcassie

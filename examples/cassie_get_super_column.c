@@ -48,11 +48,11 @@ int main(int argc, char ** argv) {
 
 		// Validate
 		if (
-				supercol->num_columns == 3 &&
+				cassie_super_column_get_num_columns(supercol) == 3 &&
 
-				strcmp(CASSIE_BDATA(supercol->columns[0]->name), "Albert") == 0 &&
-				strcmp(CASSIE_BDATA(supercol->columns[1]->name), "Bob") == 0 &&
-				strcmp(CASSIE_BDATA(supercol->columns[2]->name), "Vincent") == 0
+				strcmp(cassie_column_get_name_data(cassie_super_column_get_column(supercol, 0)), "Albert") == 0 &&
+				strcmp(cassie_column_get_name_data(cassie_super_column_get_column(supercol, 1)), "Bob") == 0 &&
+				strcmp(cassie_column_get_name_data(cassie_super_column_get_column(supercol, 2)), "Vincent") == 0
 				) {
 			printf(".");
 		}

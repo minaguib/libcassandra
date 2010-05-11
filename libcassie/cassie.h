@@ -11,6 +11,8 @@
 #ifndef __LIBCASSIE_H
 #define __LIBCASSIE_H
 
+#include <stdint.h>
+
 #ifdef __cplusplus
 namespace libcassie {
 	extern "C" {
@@ -33,22 +35,15 @@ namespace libcassie {
 
 		typedef struct _cassie * cassie_t;
 
-		typedef struct _cassie_blob {
+		typedef struct _cassie_column * cassie_column_t;
+
+		typedef struct _cassie_super_column * cassie_super_column_t;
+
+		typedef struct _cassie_blob * cassie_blob_t;
+		struct _cassie_blob {
 			char * data;
 			size_t length;
-		} * cassie_blob_t;
-
-		typedef struct _cassie_column {
-			cassie_blob_t name;
-			cassie_blob_t value;
-			int64_t timestamp;
-		} * cassie_column_t;
-
-		typedef struct _cassie_super_column {
-			cassie_blob_t 		name;
-			cassie_column_t	* columns;
-			unsigned int 		num_columns;
-		} * cassie_super_column_t;
+		};
 
 		/* -----------------------------------------------------
 		 * In cassie.cc
@@ -81,11 +76,13 @@ namespace libcassie {
 		 * If the blob does not contain a NULL, cassie_blob_init will ensure there's a NULL sitting at its end, so reading it like a C string
 		 * will not read past allocation.
 		 */
-#define CASSIE_BDATA(blob) (blob->data)
+#define CASSIE_BDATA(blob) (cassie_blob_get_data(blob))
+		char * cassie_blob_get_data(cassie_blob_t blob);
 
 		/* Returns the underlying length of the blob
 		 */
-#define CASSIE_BLENGTH(blob) (blob->length)
+#define CASSIE_BLENGTH(blob) (cassie_blob_get_length(blob))
+		size_t cassie_blob_get_length(cassie_blob_t blob);
 
 		/* Initializes a blob
 		 * Use cassie_blob_free when you're done with it
@@ -106,6 +103,21 @@ namespace libcassie {
 
 		/* Free a column that was initialized by cassie_column_init */
 		void cassie_column_free(cassie_column_t column);
+
+		/* Return the column's name */
+		cassie_blob_t cassie_column_get_name(cassie_column_t column);
+
+		/* Return the column's name blob data */
+		char * cassie_column_get_name_data(cassie_column_t column);
+
+		/* Return the column's value */
+		cassie_blob_t cassie_column_get_value(cassie_column_t column);
+
+		/* Return the column's value blob data */
+		char * cassie_column_get_value_data(cassie_column_t column);
+
+		/* Return the column's timestamp */
+		uint64_t cassie_column_get_timestamp(cassie_column_t column);
 
 		/* -----------------
 		 * In cassie_io_column.cc
@@ -180,6 +192,18 @@ namespace libcassie {
 
 		/* Frees a super column, typically returned with cassie_get_super_column */
 		void cassie_super_column_free(cassie_super_column_t supercol);
+
+		/* Returns the name of the super column */
+		cassie_blob_t cassie_super_column_get_name(cassie_super_column_t supercol);
+
+		/* Returns the number of columns in the super column */
+		unsigned int cassie_super_column_get_num_columns(cassie_super_column_t supercol);
+
+		/* Returns an array of columns in the super column */
+		cassie_column_t  * cassie_super_column_get_columns(cassie_super_column_t supercol);
+
+		/* Returns the Nth column in the super column */
+		cassie_column_t cassie_super_column_get_column(cassie_super_column_t supercol, unsigned int i);
 
 #ifdef __cplusplus
 	}

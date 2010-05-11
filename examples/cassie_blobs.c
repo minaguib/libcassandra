@@ -65,11 +65,11 @@ int main(int argc, char ** argv) {
 
 					col_out &&
 
-					CASSIE_BLENGTH(col_out->name) == 3 &&
-					strcmp(CASSIE_BDATA(col_out->name), "pic") == 0 &&
+					CASSIE_BLENGTH(cassie_column_get_name(col_out)) == 3 &&
+					strcmp(CASSIE_BDATA(cassie_column_get_name(col_out)), "pic") == 0 &&
 
-					CASSIE_BLENGTH(col_out->value) == CASSIE_BLENGTH(image) &&
-					memcmp(CASSIE_BDATA(col_out->value), CASSIE_BDATA(image), CASSIE_BLENGTH(image)) == 0
+					CASSIE_BLENGTH(cassie_column_get_value(col_out)) == CASSIE_BLENGTH(image) &&
+					memcmp(CASSIE_BDATA(cassie_column_get_value(col_out)), CASSIE_BDATA(image), CASSIE_BLENGTH(image)) == 0
 
 					) {
 				printf(".");

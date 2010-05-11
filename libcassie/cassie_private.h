@@ -22,6 +22,18 @@ namespace libcassie {
 		std::tr1::shared_ptr<libcassandra::Cassandra>	cassandra;
 	};
 
+	struct _cassie_column {
+		cassie_blob_t name;
+		cassie_blob_t value;
+		int64_t timestamp;
+	};
+
+	struct _cassie_super_column {
+		cassie_blob_t 		name;
+		cassie_column_t	* columns;
+		unsigned int 		num_columns;
+	};
+
 	void cassie_set_error(cassie_t cassie, const char * format, ...);
 
 	/* Initializes a representation of a column (name + value + timestamp)

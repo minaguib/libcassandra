@@ -46,6 +46,27 @@ namespace libcassie {
 			free(supercol);
 		}
 
+		cassie_blob_t cassie_super_column_get_name(cassie_super_column_t supercol) {
+			return(supercol->name);
+		}
+
+		unsigned int cassie_super_column_get_num_columns(cassie_super_column_t supercol) {
+			return(supercol->num_columns);
+		}
+
+		cassie_column_t  * cassie_super_column_get_columns(cassie_super_column_t supercol) {
+			return(supercol->columns);
+		}
+
+		cassie_column_t cassie_super_column_get_column(cassie_super_column_t supercol, unsigned int i) {
+			if (i < supercol->num_columns) {
+				return(supercol->columns[i]);
+			}
+			else {
+				return(NULL);
+			}
+		}
+
 	} // extern "C"
 
 	// Not for public consumption, not in C space:

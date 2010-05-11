@@ -33,6 +33,26 @@ namespace libcassie {
 			free(column);
 		}
 
+		cassie_blob_t cassie_column_get_name(cassie_column_t column) {
+			return(column->name);
+		}
+
+		char * cassie_column_get_name_data(cassie_column_t column) {
+			return(CASSIE_BDATA(column->name));
+		}
+
+		cassie_blob_t cassie_column_get_value(cassie_column_t column) {
+			return(column->value);
+		}
+
+		char * cassie_column_get_value_data(cassie_column_t column) {
+			return(CASSIE_BDATA(column->value));
+		}
+
+		uint64_t cassie_column_get_timestamp(cassie_column_t column) {
+			return(column->timestamp);
+		}
+
 	} // extern "C"
 
 
