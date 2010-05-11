@@ -15,6 +15,7 @@
 #include <libcassandra/keyspace.h>
 
 #include "cassie.h"
+#include "cassie_private.h"
 
 namespace libcassie {
 

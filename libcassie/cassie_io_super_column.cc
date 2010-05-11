@@ -12,9 +12,7 @@
 #include <libcassandra/keyspace.h>
 
 #include "cassie.h"
-#include "cassie_super_column.h"
-#include "cassie_blob.h"
-#include "cassie_io_super_column.h"
+#include "cassie_private.h"
 
 namespace libcassie {
 

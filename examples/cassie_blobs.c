@@ -2,9 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <cassie.h>
-#include <cassie_column.h>
-#include <cassie_blob.h>
-#include <cassie_io_column.h>
 
 /*
  * Demonstrates talking to cassandra using the C libcassie

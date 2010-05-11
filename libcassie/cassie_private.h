@@ -8,24 +8,21 @@
  *
  */
 
-#ifndef __LIBCASSIE_COLUMN_H
-#define __LIBCASSIE_COLUMN_H
+#ifndef __LIBCASSIE_PRIVATE_H
+#define __LIBCASSIE_PRIVATE_H
 
-#include "cassie_types.h"
+/* Not for public consumption, not in C space: */
 
-#ifdef __cplusplus
 namespace libcassie {
 
-	extern "C" {
-#endif
+	struct _cassie {
+		char *														host;
+		int															port;
+		char *														last_error;
+		std::tr1::shared_ptr<libcassandra::Cassandra>	cassandra;
+	};
 
-		/* Free a column that was initialized by cassie_column_init */
-		void cassie_column_free(cassie_column_t column);
-
-#ifdef __cplusplus
-	}
-
-	// Not for public consumption, not in C space:
+	void cassie_set_error(cassie_t cassie, const char * format, ...);
 
 	/* Initializes a representation of a column (name + value + timestamp)
 	 * Call cassie_column_free when done with it
@@ -43,8 +40,11 @@ namespace libcassie {
 			org::apache::cassandra::Column cpp_column
 			);
 
+	cassie_super_column_t cassie_super_column_convert(
+			cassie_t cassie,
+			org::apache::cassandra::SuperColumn cpp_super_column
+			);
+
 }
-#endif
 
 #endif
-
