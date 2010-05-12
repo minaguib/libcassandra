@@ -21,6 +21,10 @@ int main(int argc, char ** argv) {
 	while (++i) {
 
 		cassie = cassie_init("localhost", 9160);
+		if (!cassie) {
+			printf("NO CASSIE!\n");
+			exit(1);
+		}
 		cassie_print_debug(cassie);
 
 		printf("Cassie generation %d: ", i);

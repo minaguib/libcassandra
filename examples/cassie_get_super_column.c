@@ -16,6 +16,10 @@ int main(int argc, char ** argv) {
 	cassie_super_column_t supercol;
 
 	cassie = cassie_init("localhost", 9160);
+	if (!cassie) {
+		printf("NO CASSIE!\n");
+		exit(1);
+	}
 	cassie_print_debug(cassie);
 
 	/* Add columns in a supercolumn */

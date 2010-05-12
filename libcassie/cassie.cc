@@ -27,16 +27,24 @@ namespace libcassie {
 		cassie_t cassie_init(const char * host, int port) {
 
 			cassie_t cassie;
+			std::tr1::shared_ptr<libcassandra::Cassandra>   cassandra;
 
 			if (!host) return(NULL);
+
+			try {
+				CassandraFactory factory(host, port);
+				cassandra = factory.create();
+			}
+			catch (const std::exception& e) {
+				//cout << "Exception " << typeid(e).name() << ": " << e.what() << endl;
+				return(NULL);
+			}
 
 			cassie = new _cassie;
 			cassie->host 			= strdup(host);
 			cassie->port 			= port;
 			cassie->last_error	= NULL;
-
-			CassandraFactory factory(host, port);
-			cassie->cassandra = factory.create();
+			cassie->cassandra    = cassandra;
 
 			return(cassie);
 		}
@@ -61,21 +69,29 @@ namespace libcassie {
 
 		void cassie_print_debug(cassie_t cassie) {
 
-			string clus_name= cassie->cassandra->getClusterName();
-			cout << "\tcluster name: " << clus_name << endl;
+			try {
 
-			set<string> key_out= cassie->cassandra->getKeyspaces();
-			for (set<string>::iterator it = key_out.begin(); it != key_out.end(); ++it) {
-				cout << "\tkeyspace: " << *it << endl;
+				string clus_name= cassie->cassandra->getClusterName();
+				cout << "\tcluster name: " << clus_name << endl;
+
+				set<string> key_out= cassie->cassandra->getKeyspaces();
+				for (set<string>::iterator it = key_out.begin(); it != key_out.end(); ++it) {
+					cout << "\tkeyspace: " << *it << endl;
+				}
+
+				map<string, string> tokens= cassie->cassandra->getTokenMap(false);
+				for (map<string, string>::iterator it= tokens.begin();
+						it != tokens.end();
+						++it)
+				{
+					cout << "\t" << it->first << " : " << it->second << endl;
+				}
+
+			}
+			catch (const std::exception& e) {
+				cout << "Exception caught: " << e.what() << endl;
 			}
 
-			map<string, string> tokens= cassie->cassandra->getTokenMap(false);
-			for (map<string, string>::iterator it= tokens.begin();
-					it != tokens.end();
-					++it)
-			{
-				cout << "\t" << it->first << " : " << it->second << endl;
-			}
 		}
 
 
