@@ -68,7 +68,7 @@ namespace libcassie {
 		 */
 
 		/* Allows in-line conversion of C string to cassie_blob_t */
-#define CASSIE_CTOB(cstr) (cstr == NULL ? (&(struct _cassie_blob){NULL, 0}) : (&(struct _cassie_blob){(cstr), strlen(cstr)}))
+#define CASSIE_CTOB(cstr) (&(struct _cassie_blob) {cstr, (cstr ? strlen(cstr) : 0)} )
 
 		/* Returns the underlying data of the blob
 		 * Notice that if you treat this as a C string, it will be safe but may be LOSSY:
@@ -195,6 +195,9 @@ namespace libcassie {
 
 		/* Returns the name of the super column */
 		cassie_blob_t cassie_super_column_get_name(cassie_super_column_t supercol);
+
+		/* Return the super column's name blob data */
+		char * cassie_super_column_get_name_data(cassie_super_column_t supercol);
 
 		/* Returns the number of columns in the super column */
 		unsigned int cassie_super_column_get_num_columns(cassie_super_column_t supercol);

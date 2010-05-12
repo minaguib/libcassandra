@@ -50,6 +50,10 @@ namespace libcassie {
 			return(supercol->name);
 		}
 
+		char * cassie_super_column_get_name_data(cassie_super_column_t supercol) {
+			return(CASSIE_BDATA(supercol->name));
+		}
+
 		unsigned int cassie_super_column_get_num_columns(cassie_super_column_t supercol) {
 			return(supercol->num_columns);
 		}
