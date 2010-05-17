@@ -8,6 +8,7 @@
  */
 
 #include <stdarg.h>
+#include <string.h>
 
 #include <iostream>
 #include <libcassandra/cassandra_factory.h>
@@ -103,6 +104,7 @@ namespace libcassie {
 	void cassie_set_error(cassie_t cassie, const char * format, ...) {
 
 		va_list ap;
+		int i;
 
 		if (cassie->last_error) {
 			free(cassie->last_error);
@@ -111,7 +113,7 @@ namespace libcassie {
 
 		if (format != NULL) {
 			va_start(ap, format);
-			vasprintf(&(cassie->last_error), format, ap);
+			i = vasprintf(&(cassie->last_error), format, ap);
 			va_end(ap);
 		}
 

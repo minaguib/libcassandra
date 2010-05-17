@@ -7,6 +7,8 @@
  * the COPYING file in the parent directory for full text.
  */
 
+#include <string.h>
+
 #include <libcassandra/cassandra_factory.h>
 #include <libcassandra/cassandra.h>
 #include <libcassandra/keyspace.h>
