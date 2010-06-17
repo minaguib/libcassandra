@@ -164,6 +164,69 @@ namespace libcassie {
 			return(value);
 		}
 
+		cassie_column_t cassie_get_columns_by_range(
+				cassie_t cassie,
+				const char * keyspace,
+				const char * column_family,
+				const char * key,
+				cassie_blob_t super_column_name,
+				cassie_blob_t start_name,
+				cassie_blob_t finish_name,
+				short int reversed,
+				int count,
+				cassie_consistency_level_t level
+				) {
+
+			Keyspace *key_space;
+			string(cpp_super_column_name);
+			org::apache::cassandra::SliceRange range;
+			cassie_column_t result = NULL, previous = NULL, latest = NULL;
+			if (super_column_name  != NULL) {
+				cpp_super_column_name.assign(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
+			}
+
+			/* Prep range */
+			if (start_name != NULL) {
+				range.start.assign(CASSIE_BDATA(start_name), CASSIE_BLENGTH(start_name));
+			}
+			if (finish_name != NULL) {
+				range.finish.assign(CASSIE_BDATA(finish_name), CASSIE_BLENGTH(finish_name));
+			}
+			if (reversed) {
+				range.reversed = true;
+			}
+			if (count != 0) {
+				range.count = count;
+			}
+
+			try {
+				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
+				vector<org::apache::cassandra::Column> cpp_columns = key_space->getColumns(key, column_family, cpp_super_column_name, range);
+				for (vector<org::apache::cassandra::Column>::iterator it = cpp_columns.begin(); it != cpp_columns.end(); ++it) {
+					latest = cassie_column_convert(cassie, *it);
+					if (result == NULL)
+						result = latest;
+					else
+						previous->next = latest;
+					previous = latest;
+				}
+				return(result);
+			}
+			catch (org::apache::cassandra::NotFoundException &nfe) {
+				cassie_set_error(cassie, NULL);
+				return(NULL);
+			}
+			catch (org::apache::cassandra::InvalidRequestException &ire) {
+				cassie_set_error(cassie, "Exception InvalidRequest: %s", ire.why.c_str());
+				return(NULL);
+			}
+			catch (const std::exception& e) {
+				cassie_set_error(cassie, "Exception %s: %s", typeid(e).name(), e.what());
+				return(NULL);
+			}
+
+		}
+
 	} // extern "C"
 
 } // namespace libcassie

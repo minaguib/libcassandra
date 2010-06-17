@@ -156,6 +156,61 @@ void getcolumns_bykeys(cassie_t cassie) {
 
 }
 
+void getcolumns_byrange(cassie_t cassie) {
+
+  cassie_column_t columns = NULL, col = NULL;
+
+  cassie_insert_column(
+      cassie,
+      "Keyspace1",
+      "Standard1",
+      "bob",
+      NULL,
+      CASSIE_CTOB("aaa1"),
+      CASSIE_CTOB("vaaa1"),
+      CASSIE_CONSISTENCY_LEVEL_ONE
+      );
+
+#define CIN(name, value)              \
+  cassie_insert_column(               \
+      cassie,                         \
+      "Keyspace1",                    \
+      "Standard1",                    \
+      "bob",                          \
+      NULL,                           \
+      CASSIE_CTOB(name),              \
+      CASSIE_CTOB(value),             \
+      CASSIE_CONSISTENCY_LEVEL_ONE    \
+      );
+
+  CIN("aaa1", "vaaa1")
+  CIN("bbb1", "vbbb1")
+  CIN("bbb2", "vbbb2")
+  CIN("bbb3", "vbbb3")
+  CIN("ccc1", "vccc1")
+#undef CIN
+
+  columns = cassie_get_columns_by_range(
+      cassie,
+      "Keyspace1",
+      "Standard1",
+      "bob",
+      NULL,
+      CASSIE_CTOB("bbb1"),
+      CASSIE_CTOB("bbb3"),
+      0,
+      0,
+      CASSIE_CONSISTENCY_LEVEL_ONE
+      );
+
+  for (col = columns; col != NULL; col = cassie_column_get_next(col)) {
+    printf("\tGot column %s = %s\n", cassie_column_get_name_data(col), cassie_column_get_value_data(col));
+  }
+
+  cassie_column_free(columns);
+
+}
+
 /*
  *
 void getsupercolumns_bykeys(tr1::shared_ptr<Cassandra> client) {
@@ -212,27 +267,6 @@ void getsupercolumns_byrange(tr1::shared_ptr<Cassandra> client) {
 
 }
 
-void getcolumns_byrange(tr1::shared_ptr<Cassandra> client) {
-
-  Keyspace *key_space= client->getKeyspace("Keyspace1");
-
-  key_space->insertColumn("bob", "Standard1", "aaa1", "vaaa1");
-  key_space->insertColumn("bob", "Standard1", "bbb1", "vbbb1");
-  key_space->insertColumn("bob", "Standard1", "bbb2", "vbbb2");
-  key_space->insertColumn("bob", "Standard1", "bbb3", "vbbb3");
-  key_space->insertColumn("bob", "Standard1", "ccc1", "vccc1");
-
-  org::apache::cassandra::SliceRange range;
-  range.start.assign("bbb1");
-  range.finish.assign("bbb3");
-  vector<org::apache::cassandra::Column> cols= key_space->getColumns("bob", "Standard1", range);
-
-  for (vector<org::apache::cassandra::Column>::iterator it = cols.begin(); it != cols.end(); ++it) {
-    cout << "\tGot column " << it->name << " = " << it->value << endl;
-  }
-
-}
-
 */
 
 int main(int argc, char ** argv) {
@@ -251,11 +285,11 @@ int main(int argc, char ** argv) {
   getcolumns_bykeys(cassie);
   printf("\n");
 
-/*
   printf("GetColumns by range:\n");
   getcolumns_byrange(cassie);
   printf("\n");
 
+/*
   printf("GetSuperColumns by keys:\n");
   getsupercolumns_bykeys(cassie);
   printf("\n");
