@@ -26,6 +26,11 @@ namespace libcassie {
 
 			if (!supercol) return;
 
+			if (supercol->next) {
+				cassie_super_column_free(supercol->next);
+				supercol->next = NULL;
+			}
+
 			if (supercol->name) {
 				cassie_blob_free(supercol->name);
 				supercol->name = NULL;
@@ -88,6 +93,7 @@ namespace libcassie {
 		supercol->name = NULL;
 		supercol->columns = NULL;
 		supercol->num_columns = 0;
+		supercol->next = NULL;
 
 		supercol->name = cassie_blob_init(cpp_super_column.name.data(), cpp_super_column.name.length());
 		if (!supercol->name) {

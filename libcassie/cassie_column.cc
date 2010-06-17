@@ -22,6 +22,10 @@ namespace libcassie {
 
 		void cassie_column_free(cassie_column_t column) {
 			if (!column) return;
+			if (column->next) {
+				cassie_column_free(column->next);
+				column->next = NULL;
+			}
 			if (column->name) {
 				cassie_blob_free(column->name);
 				column->name = NULL;
@@ -53,6 +57,10 @@ namespace libcassie {
 			return(column->timestamp);
 		}
 
+		cassie_column_t cassie_column_get_next(cassie_column_t column) {
+			return(column->next);
+		}
+
 	} // extern "C"
 
 
@@ -76,6 +84,7 @@ namespace libcassie {
 		column->name = name;
 		column->value = value;
 		column->timestamp = timestamp;
+		column->next = NULL;
 
 		return(column);
 

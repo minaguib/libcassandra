@@ -101,7 +101,9 @@ namespace libcassie {
 		 * -----------------
 		 */
 
-		/* Free a column that was initialized by cassie_column_init */
+		/* Free a column that was initialized by cassie_column_init
+		 * If the column is part of a linked list, children are freed as well
+		 * */
 		void cassie_column_free(cassie_column_t column);
 
 		/* Return the column's name */
@@ -118,6 +120,9 @@ namespace libcassie {
 
 		/* Return the column's timestamp */
 		uint64_t cassie_column_get_timestamp(cassie_column_t column);
+
+		/* Return the next column in case of a linked list */
+		cassie_column_t cassie_column_get_next(cassie_column_t column);
 
 		/* -----------------
 		 * In cassie_io_column.cc
@@ -190,7 +195,9 @@ namespace libcassie {
 		 * -----------------
 		 */
 
-		/* Frees a super column, typically returned with cassie_get_super_column */
+		/* Frees a super column, typically returned with cassie_get_super_column
+		 * If the super column is part of a linked list, children are freed as well
+		 * */
 		void cassie_super_column_free(cassie_super_column_t supercol);
 
 		/* Returns the name of the super column */
@@ -207,6 +214,9 @@ namespace libcassie {
 
 		/* Returns the Nth column in the super column */
 		cassie_column_t cassie_super_column_get_column(cassie_super_column_t supercol, unsigned int i);
+
+		/* Return the next super column in case of a linked list */
+		cassie_super_column_t cassie_super_column_get_next(cassie_super_column_t column);
 
 #ifdef __cplusplus
 	}

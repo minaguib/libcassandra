@@ -26,12 +26,14 @@ namespace libcassie {
 		cassie_blob_t name;
 		cassie_blob_t value;
 		int64_t timestamp;
+		struct _cassie_column * next;
 	};
 
 	struct _cassie_super_column {
 		cassie_blob_t 		name;
 		cassie_column_t	* columns;
 		unsigned int 		num_columns;
+		struct _cassie_super_column * next;
 	};
 
 	void cassie_set_error(cassie_t cassie, const char * format, ...);
