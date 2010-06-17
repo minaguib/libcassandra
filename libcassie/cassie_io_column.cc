@@ -91,6 +91,58 @@ namespace libcassie {
 
 		}
 
+		cassie_column_t cassie_get_columns_by_names(
+				cassie_t cassie,
+				const char * keyspace,
+				const char * column_family,
+				const char * key,
+				cassie_blob_t super_column_name,
+				cassie_blob_t *column_names,
+				cassie_consistency_level_t level
+				) {
+
+			Keyspace *key_space;
+			string(cpp_super_column_name);
+			vector<string> cpp_column_names;
+			cassie_blob_t *blob;
+			cassie_column_t result = NULL, previous = NULL, latest = NULL;
+			if (super_column_name  != NULL) {
+				cpp_super_column_name.assign(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
+			}
+
+			for(blob = column_names; *blob != NULL; blob++) {
+				string cn(CASSIE_BDATA(*blob), CASSIE_BLENGTH(*blob));
+				cpp_column_names.push_back(cn);
+			}
+
+			try {
+				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
+				vector<org::apache::cassandra::Column> cpp_columns = key_space->getColumns(key, column_family, cpp_super_column_name, cpp_column_names);
+				for (vector<org::apache::cassandra::Column>::iterator it = cpp_columns.begin(); it != cpp_columns.end(); ++it) {
+					latest = cassie_column_convert(cassie, *it);
+					if (result == NULL)
+						result = latest;
+					else
+						previous->next = latest;
+					previous = latest;
+				}
+				return(result);
+			}
+			catch (org::apache::cassandra::NotFoundException &nfe) {
+				cassie_set_error(cassie, NULL);
+				return(NULL);
+			}
+			catch (org::apache::cassandra::InvalidRequestException &ire) {
+				cassie_set_error(cassie, "Exception InvalidRequest: %s", ire.why.c_str());
+				return(NULL);
+			}
+			catch (const std::exception& e) {
+				cassie_set_error(cassie, "Exception %s: %s", typeid(e).name(), e.what());
+				return(NULL);
+			}
+
+		}
+
 		char * cassie_get_column_value(
 				cassie_t cassie,
 				const char * keyspace,

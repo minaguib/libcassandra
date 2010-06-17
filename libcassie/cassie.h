@@ -173,6 +173,22 @@ namespace libcassie {
 				cassie_consistency_level_t level
 				);
 
+		/* Retrieves multiple columns from cassandra
+		 * The columns will be retrieved from inside the given column_family
+		 * UNLESS super_column_name is specified, in which case they will be retrieved from that column_family+super_column_name
+		 * Call cassie_column_free() on the returned result (first one) when done with them
+		 * Use cassie_column_get_next to iterate over them
+		 */
+		cassie_column_t cassie_get_columns_by_names(
+				cassie_t cassie,
+				const char * keyspace,
+				const char * column_family,
+				const char * key,
+				cassie_blob_t super_column_name,
+				cassie_blob_t *column_names,
+				cassie_consistency_level_t level
+				);
+
 		/* -----------------
 		 * In cassie_io_super_column.cc
 		 * -----------------
