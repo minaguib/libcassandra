@@ -76,6 +76,10 @@ namespace libcassie {
 			}
 		}
 
+		cassie_super_column_t cassie_super_column_get_next(cassie_super_column_t super_column) {
+			return(super_column->next);
+		}
+
 	} // extern "C"
 
 	// Not for public consumption, not in C space:

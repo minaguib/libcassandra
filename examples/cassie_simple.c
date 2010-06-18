@@ -211,63 +211,106 @@ void getcolumns_byrange(cassie_t cassie) {
 
 }
 
-/*
- *
-void getsupercolumns_bykeys(tr1::shared_ptr<Cassandra> client) {
+void getsupercolumns_bykeys(cassie_t cassie) {
 
-  Keyspace *key_space= client->getKeyspace("Keyspace1");
+  cassie_blob_t names[3];
+  cassie_super_column_t supercols = NULL, supercol = NULL;
+  cassie_column_t col = NULL;
+  int i = 0;
 
-  key_space->insertColumn("bob", "Super1", "friend1", "name", "tim");
-  key_space->insertColumn("bob", "Super1", "friend1", "age", "20");
+#define SCIN(name1, name2, value)     \
+  cassie_insert_column(               \
+      cassie,                         \
+      "Keyspace1",                    \
+      "Super1",                       \
+      "bob",                          \
+      CASSIE_CTOB(name1),             \
+      CASSIE_CTOB(name2),             \
+      CASSIE_CTOB(value),             \
+      CASSIE_CONSISTENCY_LEVEL_ONE    \
+      );
 
-  key_space->insertColumn("bob", "Super1", "friend2", "name", "mac");
-  key_space->insertColumn("bob", "Super1", "friend2", "age", "30");
+  SCIN("friend1", "name", "tim")
+  SCIN("friend1", "age", "20")
+  SCIN("friend2", "name", "mac")
+  SCIN("friend2", "age", "30")
+  SCIN("friend3", "name", "bud")
+  SCIN("friend3", "age", "40")
 
-  key_space->insertColumn("bob", "Super1", "friend3", "name", "bud");
-  key_space->insertColumn("bob", "Super1", "friend3", "age", "40");
+#undef SCIN
 
-  vector<string> keys;
-  keys.push_back("friend1");
-  keys.push_back("friend2");
-  vector<org::apache::cassandra::SuperColumn> scols= key_space->getSuperColumns("bob", "Super1", keys);
+  names[0] = CASSIE_CTOB("friend1");
+  names[1] = CASSIE_CTOB("friend2");
+  names[2] = NULL;
 
-  for (vector<org::apache::cassandra::SuperColumn>::iterator it = scols.begin(); it != scols.end(); ++it) {
-    cout << "\tGot super column " << it->name << endl;
-    for (vector<org::apache::cassandra::Column>::iterator it2 = it->columns.begin(); it2 != it->columns.end(); ++it2) {
-      cout << "\t\tChild column " << it2->name << " = " << it2->value << endl;
-    }
+  supercols = cassie_get_super_columns_by_names(
+      cassie,
+      "Keyspace1",
+      "Super1",
+      "bob",
+      names,
+      CASSIE_CONSISTENCY_LEVEL_ONE
+      );
+
+  for (supercol = supercols; supercol != NULL; supercol = cassie_super_column_get_next(supercol)) {
+    printf("\tGot super column %s\n", cassie_super_column_get_name_data(supercol));
+	 for (i = 0; i < cassie_super_column_get_num_columns(supercol); i++) {
+		 col = cassie_super_column_get_column(supercol, i);
+		 printf("\t\tChild column %s = %s\n", cassie_column_get_name_data(col), cassie_column_get_value_data(col));
+	 }
   }
 
 }
 
-void getsupercolumns_byrange(tr1::shared_ptr<Cassandra> client) {
 
-  Keyspace *key_space= client->getKeyspace("Keyspace1");
+void getsupercolumns_byrange(cassie_t cassie) {
 
-  key_space->insertColumn("bob", "Super1", "friend1", "name", "tim");
-  key_space->insertColumn("bob", "Super1", "friend1", "age", "20");
+  cassie_super_column_t supercols = NULL, supercol = NULL;
+  cassie_column_t col = NULL;
+  int i = 0;
 
-  key_space->insertColumn("bob", "Super1", "friend2", "name", "mac");
-  key_space->insertColumn("bob", "Super1", "friend2", "age", "30");
+#define SCIN(name1, name2, value)     \
+  cassie_insert_column(               \
+      cassie,                         \
+      "Keyspace1",                    \
+      "Super1",                       \
+      "bob",                          \
+      CASSIE_CTOB(name1),             \
+      CASSIE_CTOB(name2),             \
+      CASSIE_CTOB(value),             \
+      CASSIE_CONSISTENCY_LEVEL_ONE    \
+      );
 
-  key_space->insertColumn("bob", "Super1", "friend3", "name", "bud");
-  key_space->insertColumn("bob", "Super1", "friend3", "age", "40");
+  SCIN("friend1", "name", "tim")
+  SCIN("friend1", "age", "20")
+  SCIN("friend2", "name", "mac")
+  SCIN("friend2", "age", "30")
+  SCIN("friend3", "name", "bud")
+  SCIN("friend3", "age", "40")
 
-  org::apache::cassandra::SliceRange range;
-  range.start.assign("friend2");
-  range.finish.assign("friend3");
-  vector<org::apache::cassandra::SuperColumn> scols= key_space->getSuperColumns("bob", "Super1", range);
+#undef SCIN
 
-  for (vector<org::apache::cassandra::SuperColumn>::iterator it = scols.begin(); it != scols.end(); ++it) {
-    cout << "\tGot super column " << it->name << endl;
-    for (vector<org::apache::cassandra::Column>::iterator it2 = it->columns.begin(); it2 != it->columns.end(); ++it2) {
-      cout << "\t\tChild column " << it2->name << " = " << it2->value << endl;
-    }
+  supercols = cassie_get_super_columns_by_range(
+      cassie,
+      "Keyspace1",
+      "Super1",
+      "bob",
+      CASSIE_CTOB("friend2"),
+      CASSIE_CTOB("friend3"),
+		0,
+		0,
+      CASSIE_CONSISTENCY_LEVEL_ONE
+      );
+
+  for (supercol = supercols; supercol != NULL; supercol = cassie_super_column_get_next(supercol)) {
+    printf("\tGot super column %s\n", cassie_super_column_get_name_data(supercol));
+	 for (i = 0; i < cassie_super_column_get_num_columns(supercol); i++) {
+		 col = cassie_super_column_get_column(supercol, i);
+		 printf("\t\tChild column %s = %s\n", cassie_column_get_name_data(col), cassie_column_get_value_data(col));
+	 }
   }
 
 }
-
-*/
 
 int main(int argc, char ** argv) {
 
@@ -289,7 +332,6 @@ int main(int argc, char ** argv) {
   getcolumns_byrange(cassie);
   printf("\n");
 
-/*
   printf("GetSuperColumns by keys:\n");
   getsupercolumns_bykeys(cassie);
   printf("\n");
@@ -297,8 +339,6 @@ int main(int argc, char ** argv) {
   printf("GetSuperColumns by range:\n");
   getsupercolumns_byrange(cassie);
   printf("\n");
-
-  */
 
   cassie_free(cassie);
 
