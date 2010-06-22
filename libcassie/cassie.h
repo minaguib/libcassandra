@@ -66,10 +66,16 @@ namespace libcassie {
 		/* Frees a cassie object initialied with cassie_init */
 		void cassie_free(cassie_t cassie);
 
-		/* Self-explanatory */
+		void cassie_print_debug(cassie_t cassie);
+
+		/* -----------------------------------------------------
+		 * In cassie_error.cc
+		 * -----------------------------------------------------
+		 */
+
 		char * cassie_last_error_string(cassie_t cassie);
 		cassie_error_code_t cassie_last_error_code(cassie_t cassie);
-		void cassie_print_debug(cassie_t cassie);
+
 
 		/* -----------------------------------------------------
 		 * In cassie_blob.cc

@@ -13,6 +13,7 @@ lib_LTLIBRARIES+= libcassie/libcassie.la
 libcassie_libcassie_la_CXXFLAGS= ${AM_CXXFLAGS}
 libcassie_libcassie_la_SOURCES = \
 				       libcassie/cassie.cc \
+				       libcassie/cassie_error.cc \
 				       libcassie/cassie_blob.cc \
 				       libcassie/cassie_io_column.cc \
 				       libcassie/cassie_io_super_column.cc \
