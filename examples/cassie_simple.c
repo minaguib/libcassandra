@@ -254,10 +254,10 @@ void getsupercolumns_bykeys(cassie_t cassie) {
 
   for (supercol = supercols; supercol != NULL; supercol = cassie_super_column_get_next(supercol)) {
     printf("\tGot super column %s\n", cassie_super_column_get_name_data(supercol));
-	 for (i = 0; i < cassie_super_column_get_num_columns(supercol); i++) {
-		 col = cassie_super_column_get_column(supercol, i);
-		 printf("\t\tChild column %s = %s\n", cassie_column_get_name_data(col), cassie_column_get_value_data(col));
-	 }
+    for (i = 0; i < cassie_super_column_get_num_columns(supercol); i++) {
+      col = cassie_super_column_get_column(supercol, i);
+      printf("\t\tChild column %s = %s\n", cassie_column_get_name_data(col), cassie_column_get_value_data(col));
+    }
   }
 
 }
@@ -297,17 +297,17 @@ void getsupercolumns_byrange(cassie_t cassie) {
       "bob",
       CASSIE_CTOB("friend2"),
       CASSIE_CTOB("friend3"),
-		0,
-		0,
+      0,
+      0,
       CASSIE_CONSISTENCY_LEVEL_ONE
       );
 
   for (supercol = supercols; supercol != NULL; supercol = cassie_super_column_get_next(supercol)) {
     printf("\tGot super column %s\n", cassie_super_column_get_name_data(supercol));
-	 for (i = 0; i < cassie_super_column_get_num_columns(supercol); i++) {
-		 col = cassie_super_column_get_column(supercol, i);
-		 printf("\t\tChild column %s = %s\n", cassie_column_get_name_data(col), cassie_column_get_value_data(col));
-	 }
+    for (i = 0; i < cassie_super_column_get_num_columns(supercol); i++) {
+      col = cassie_super_column_get_column(supercol, i);
+      printf("\t\tChild column %s = %s\n", cassie_column_get_name_data(col), cassie_column_get_value_data(col));
+    }
   }
 
 }
@@ -315,6 +315,10 @@ void getsupercolumns_byrange(cassie_t cassie) {
 int main(int argc, char ** argv) {
 
   cassie_t cassie = cassie_init(host, port);
+  if (!cassie) {
+    printf("NO CASSIE\n");
+    return(1);
+  }
 
   printf("Simple CRUD:\n");
   crud_simple(cassie);
