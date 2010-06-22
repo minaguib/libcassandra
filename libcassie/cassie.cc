@@ -44,8 +44,9 @@ namespace libcassie {
 			cassie = new _cassie;
 			cassie->host					= strdup(host);
 			cassie->port					= port;
+			cassie->last_error_string	= NULL;
+			cassie->last_error_code		= CASSIE_ERROR_NONE;
 			cassie->cassandra				= cassandra;
-			cassie_set_error(cassie, CASSIE_ERROR_NONE, NULL);
 
 			return(cassie);
 		}
