@@ -42,7 +42,7 @@ int main(int argc, char ** argv) {
 					CASSIE_CONSISTENCY_LEVEL_ONE
 					);
 			if (!k) {
-				printf("ERROR: %s\n", cassie_last_error(cassie));
+				printf("ERROR: %s\n", cassie_last_error_string(cassie));
 				exit(0);
 			}
 

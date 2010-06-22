@@ -34,7 +34,7 @@ int main(int argc, char ** argv) {
 				CASSIE_CTOB("Happy"), \
 				CASSIE_CONSISTENCY_LEVEL_ONE \
 				)) { \
-		printf("Failed to insert: %s\n", cassie_last_error(cassie)); \
+		printf("Failed to insert: %s\n", cassie_last_error_string(cassie)); \
 		exit(1); \
 	}
 
@@ -46,7 +46,7 @@ int main(int argc, char ** argv) {
 
 		supercol = cassie_get_super_column(cassie, "Keyspace1", "Super2", "joe", CASSIE_CTOB("friends"), CASSIE_CONSISTENCY_LEVEL_ONE);
 		if (!supercol) {
-			printf("Failed to get super column: %s\n", cassie_last_error(cassie));
+			printf("Failed to get super column: %s\n", cassie_last_error_string(cassie));
 			exit(1);
 		}
 

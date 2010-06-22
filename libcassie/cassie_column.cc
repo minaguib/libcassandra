@@ -77,7 +77,7 @@ namespace libcassie {
 
 		column = (cassie_column_t) malloc(sizeof(struct _cassie_column));
 		if (!column) {
-			cassie_set_error(cassie, "Failed to allocate %u bytes for new struct _cassie_column", sizeof(struct _cassie_column));
+			cassie_set_error(cassie, CASSIE_ERROR_OOM, "Failed to allocate %u bytes for new struct _cassie_column", sizeof(struct _cassie_column));
 			return(NULL);
 		}
 

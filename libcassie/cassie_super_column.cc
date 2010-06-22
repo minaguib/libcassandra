@@ -91,7 +91,7 @@ namespace libcassie {
 
 		supercol = (cassie_super_column_t)malloc(sizeof(struct _cassie_super_column));
 		if (!supercol) {
-			cassie_set_error(cassie, "Failed to allocate memory for a super_column_t");
+			cassie_set_error(cassie, CASSIE_ERROR_OOM, "Failed to allocate memory for a super_column_t");
 			return(NULL);
 		}
 		supercol->name = NULL;
@@ -101,7 +101,7 @@ namespace libcassie {
 
 		supercol->name = cassie_blob_init(cpp_super_column.name.data(), cpp_super_column.name.length());
 		if (!supercol->name) {
-			cassie_set_error(cassie, "Failed to allocate memory for super column name");
+			cassie_set_error(cassie, CASSIE_ERROR_OOM, "Failed to allocate memory for super column name");
 			cassie_super_column_free(supercol);
 			return(NULL);
 		}
@@ -109,7 +109,7 @@ namespace libcassie {
 		i = cpp_super_column.columns.size();
 		supercol->columns = (cassie_column_t *)malloc(sizeof(struct _cassie_column) * i);
 		if (!supercol->columns) {
-			cassie_set_error(cassie, "Failed to allocate memory for super column's columns");
+			cassie_set_error(cassie, CASSIE_ERROR_OOM, "Failed to allocate memory for super column's columns");
 			cassie_super_column_free(supercol);
 			return(NULL);
 		}

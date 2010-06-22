@@ -33,6 +33,13 @@ namespace libcassie {
 			CASSIE_CONSISTENCY_LEVEL_ANY           =  6
 		} cassie_consistency_level_t;
 
+		typedef enum {
+			CASSIE_ERROR_NONE = 0,
+			CASSIE_ERROR_OOM,
+			CASSIE_ERROR_INVALID_REQUEST,
+			CASSIE_ERROR_OTHER
+		} cassie_error_code_t;
+
 		typedef struct _cassie * cassie_t;
 
 		typedef struct _cassie_column * cassie_column_t;
@@ -59,7 +66,8 @@ namespace libcassie {
 		void cassie_free(cassie_t cassie);
 
 		/* Self-explanatory */
-		char * cassie_last_error(cassie_t cassie);
+		char * cassie_last_error_string(cassie_t cassie);
+		cassie_error_code_t cassie_last_error_code(cassie_t cassie);
 		void cassie_print_debug(cassie_t cassie);
 
 		/* -----------------------------------------------------

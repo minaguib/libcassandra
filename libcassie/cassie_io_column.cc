@@ -45,14 +45,15 @@ namespace libcassie {
 			try {
 				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
 				key_space->insertColumn(key, column_family, cpp_super_column_name, cpp_column_name, cpp_value);
+				cassie_set_error(cassie, CASSIE_ERROR_NONE, NULL);
 				return(1);
 			}
 			catch (org::apache::cassandra::InvalidRequestException &ire) {
-				cassie_set_error(cassie, "Exception: %s", ire.why.c_str());
+				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception: %s", ire.why.c_str());
 				return(0);
 			}
 			catch (const std::exception& e) {
-				cassie_set_error(cassie, "Exception %s: %s", typeid(e).name(), e.what());
+				cassie_set_error(cassie, CASSIE_ERROR_OTHER, "Exception %s: %s", typeid(e).name(), e.what());
 				return(NULL);
 			}
 
@@ -81,15 +82,15 @@ namespace libcassie {
 				return(cassie_column_convert(cassie, cpp_column));
 			}
 			catch (org::apache::cassandra::NotFoundException &nfe) {
-				cassie_set_error(cassie, NULL);
+				cassie_set_error(cassie, CASSIE_ERROR_NONE, NULL);
 				return(NULL);
 			}
 			catch (org::apache::cassandra::InvalidRequestException &ire) {
-				cassie_set_error(cassie, "Exception InvalidRequest: %s", ire.why.c_str());
+				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception InvalidRequest: %s", ire.why.c_str());
 				return(NULL);
 			}
 			catch (const std::exception& e) {
-				cassie_set_error(cassie, "Exception %s: %s", typeid(e).name(), e.what());
+				cassie_set_error(cassie, CASSIE_ERROR_OTHER, "Exception %s: %s", typeid(e).name(), e.what());
 				return(NULL);
 			}
 
@@ -133,15 +134,15 @@ namespace libcassie {
 				return(result);
 			}
 			catch (org::apache::cassandra::NotFoundException &nfe) {
-				cassie_set_error(cassie, NULL);
+				cassie_set_error(cassie, CASSIE_ERROR_NONE, NULL);
 				return(NULL);
 			}
 			catch (org::apache::cassandra::InvalidRequestException &ire) {
-				cassie_set_error(cassie, "Exception InvalidRequest: %s", ire.why.c_str());
+				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception InvalidRequest: %s", ire.why.c_str());
 				return(NULL);
 			}
 			catch (const std::exception& e) {
-				cassie_set_error(cassie, "Exception %s: %s", typeid(e).name(), e.what());
+				cassie_set_error(cassie, CASSIE_ERROR_OTHER, "Exception %s: %s", typeid(e).name(), e.what());
 				return(NULL);
 			}
 
@@ -217,15 +218,15 @@ namespace libcassie {
 				return(result);
 			}
 			catch (org::apache::cassandra::NotFoundException &nfe) {
-				cassie_set_error(cassie, NULL);
+				cassie_set_error(cassie, CASSIE_ERROR_NONE, NULL);
 				return(NULL);
 			}
 			catch (org::apache::cassandra::InvalidRequestException &ire) {
-				cassie_set_error(cassie, "Exception InvalidRequest: %s", ire.why.c_str());
+				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception InvalidRequest: %s", ire.why.c_str());
 				return(NULL);
 			}
 			catch (const std::exception& e) {
-				cassie_set_error(cassie, "Exception %s: %s", typeid(e).name(), e.what());
+				cassie_set_error(cassie, CASSIE_ERROR_OTHER, "Exception %s: %s", typeid(e).name(), e.what());
 				return(NULL);
 			}
 

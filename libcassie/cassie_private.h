@@ -18,7 +18,8 @@ namespace libcassie {
 	struct _cassie {
 		char *														host;
 		int															port;
-		char *														last_error;
+		cassie_error_code_t										last_error_code;
+		char *														last_error_string;
 		std::tr1::shared_ptr<libcassandra::Cassandra>	cassandra;
 	};
 
@@ -36,7 +37,7 @@ namespace libcassie {
 		struct _cassie_super_column * next;
 	};
 
-	void cassie_set_error(cassie_t cassie, const char * format, ...);
+	void cassie_set_error(cassie_t cassie, cassie_error_code_t code, const char * format, ...);
 
 	/* Initializes a representation of a column (name + value + timestamp)
 	 * Call cassie_column_free when done with it
