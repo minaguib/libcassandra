@@ -51,6 +51,10 @@ namespace libcassie {
 				cassie_set_error(cassie, "Exception: %s", ire.why.c_str());
 				return(0);
 			}
+			catch (const std::exception& e) {
+				cassie_set_error(cassie, "Exception %s: %s", typeid(e).name(), e.what());
+				return(NULL);
+			}
 
 		}
 
