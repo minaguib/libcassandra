@@ -36,6 +36,7 @@ namespace libcassie {
 		typedef enum {
 			CASSIE_ERROR_NONE = 0,
 			CASSIE_ERROR_OOM,
+			CASSIE_ERROR_TRANSPORT,
 			CASSIE_ERROR_INVALID_REQUEST,
 			CASSIE_ERROR_OTHER
 		} cassie_error_code_t;

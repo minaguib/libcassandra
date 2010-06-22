@@ -46,6 +46,10 @@ namespace libcassie {
 				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception InvalidRequest: %s", ire.why.c_str());
 				return(NULL);
 			}
+			catch (apache::thrift::transport::TTransportException &te) {
+				cassie_set_error(cassie, CASSIE_ERROR_TRANSPORT, "Exception: %s: %s", typeid(te).name(), te.what());
+				return(NULL);
+			}
 			catch (const std::exception& e) {
 				cassie_set_error(cassie, CASSIE_ERROR_OTHER, "Exception %s: %s", typeid(e).name(), e.what());
 				return(NULL);
@@ -91,6 +95,10 @@ namespace libcassie {
 			}
 			catch (org::apache::cassandra::InvalidRequestException &ire) {
 				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception InvalidRequest: %s", ire.why.c_str());
+				return(NULL);
+			}
+			catch (apache::thrift::transport::TTransportException &te) {
+				cassie_set_error(cassie, CASSIE_ERROR_TRANSPORT, "Exception: %s: %s", typeid(te).name(), te.what());
 				return(NULL);
 			}
 			catch (const std::exception& e) {
@@ -149,6 +157,10 @@ namespace libcassie {
 			}
 			catch (org::apache::cassandra::InvalidRequestException &ire) {
 				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception InvalidRequest: %s", ire.why.c_str());
+				return(NULL);
+			}
+			catch (apache::thrift::transport::TTransportException &te) {
+				cassie_set_error(cassie, CASSIE_ERROR_TRANSPORT, "Exception: %s: %s", typeid(te).name(), te.what());
 				return(NULL);
 			}
 			catch (const std::exception& e) {
