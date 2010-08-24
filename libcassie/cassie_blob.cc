@@ -32,6 +32,7 @@ namespace libcassie {
 			blob = (cassie_blob_t)malloc(sizeof(struct _cassie_blob));
 			if(!blob) return(NULL);
 
+			blob->data = NULL;
 			blob->length = length;
 			if (length > 0) {
 				blob->data = (char*)malloc(length + 1);
