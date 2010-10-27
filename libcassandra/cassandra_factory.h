@@ -78,6 +78,15 @@ private:
 							      int recv_timeout,
 							      int send_timeout
 							      );
+  org::apache::cassandra::CassandraClient *createThriftClient(const std::string &host,
+                                                              int port, 
+                                                              int framed_transport);
+  org::apache::cassandra::CassandraClient *createThriftClient(const std::string &host,
+                                                              int port, 
+							      int conn_timeout,
+							      int recv_timeout,
+							      int send_timeout,
+                                                              int framed_transport);
 
   std::string host;
 
