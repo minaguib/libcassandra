@@ -25,6 +25,10 @@ namespace libcassie {
 	extern "C" {
 
 		cassie_t cassie_init(const char * host, int port) {
+			return cassie_init_with_timeout(host, port, -1);
+		}
+
+		cassie_t cassie_init_with_timeout(const char * host, int port, int timeout) {
 
 			cassie_t cassie;
 			std::tr1::shared_ptr<libcassandra::Cassandra> cassandra;
@@ -32,7 +36,7 @@ namespace libcassie {
 			if (!host) return(NULL);
 
 			try {
-				CassandraFactory factory(host, port);
+				CassandraFactory factory(host, port, timeout);
 				cassandra = factory.create();
 			}
 			catch (const std::exception& e) {
@@ -89,6 +93,14 @@ namespace libcassie {
 				cout << "Exception caught: " << e.what() << endl;
 			}
 
+		}
+
+		void cassie_set_recv_timeout(cassie_t cassie, int timeout) {
+			cassie->cassandra->setRecvTimeout(timeout);
+		}
+
+		void cassie_set_send_timeout(cassie_t cassie, int timeout) {
+			cassie->cassandra->setSendTimeout(timeout);
 		}
 
 

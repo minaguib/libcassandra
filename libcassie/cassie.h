@@ -63,10 +63,22 @@ namespace libcassie {
 		 */
 		cassie_t cassie_init(const char * host, int port);
 
+		/* Initializes a new cassie object with the given
+		 * timeout set for connecting, receiving and sending
+		 * Use cassie_free when done with it
+		 */
+		cassie_t cassie_init_with_timeout(const char * host, int port, int timeout);
+
 		/* Frees a cassie object initialied with cassie_init */
 		void cassie_free(cassie_t cassie);
 
 		void cassie_print_debug(cassie_t cassie);
+
+		/* Sets the receive timeout in ms */
+		void cassie_set_recv_timeout(cassie_t cassie, int timeout);
+
+		/* Sets the send timeout in ms */
+		void cassie_set_send_timeout(cassie_t cassie, int timeout);
 
 		/* -----------------------------------------------------
 		 * In cassie_error.cc

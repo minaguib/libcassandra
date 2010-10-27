@@ -6,6 +6,7 @@
 
 static char * host = "127.0.0.1";
 static int port = 9160;
+static int timeout = 1250;
 
 void crud_simple(cassie_t cassie) {
 
@@ -314,11 +315,15 @@ void getsupercolumns_byrange(cassie_t cassie) {
 
 int main(int argc, char ** argv) {
 
-  cassie_t cassie = cassie_init(host, port);
+  cassie_t cassie = cassie_init_with_timeout(host, port, timeout);
   if (!cassie) {
     printf("NO CASSIE\n");
     return(1);
   }
+
+  // Not really needed, but for illustration:
+  cassie_set_recv_timeout(cassie, timeout);
+  cassie_set_send_timeout(cassie, timeout);
 
   printf("Simple CRUD:\n");
   crud_simple(cassie);
