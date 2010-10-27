@@ -17,11 +17,10 @@
 
 #include <boost/shared_ptr.hpp>
 
-#include <transport/TSocket.h>
-
-#include "libgenthrift/Cassandra.h"
+#include <protocol/TBinaryProtocol.h>
 #include <transport/TSocket.h>
 #include <transport/TBufferTransports.h>
+#include <transport/TTransportUtils.h>
 
 #include "libcassandra/cassandra.h"
 #include "libcassandra/exception.h"
@@ -86,17 +85,21 @@ Cassandra::~Cassandra()
 }
 
 void Cassandra::setRecvTimeout(int recv_timeout) {
-
   if (recv_timeout > 0) {
-    boost::shared_ptr<apache::thrift::transport::TSocket> s = boost::dynamic_pointer_cast<apache::thrift::transport::TSocket>( thrift_client->getInputProtocol()->getInputTransport() );
+    boost::shared_ptr<apache::thrift::transport::TTransport>            t1 = thrift_client->getInputProtocol()->getInputTransport();
+    boost::shared_ptr<apache::thrift::transport::TUnderlyingTransport>  t2 = boost::dynamic_pointer_cast<apache::thrift::transport::TUnderlyingTransport>(t1);
+    boost::shared_ptr<apache::thrift::transport::TTransport>            t3 = t2->getUnderlyingTransport();
+    boost::shared_ptr<apache::thrift::transport::TSocket>                s = boost::dynamic_pointer_cast<apache::thrift::transport::TSocket>(t3);
     s->setRecvTimeout(recv_timeout);
   }
-
 }
 
 void Cassandra::setSendTimeout(int send_timeout) {
   if (send_timeout > 0) {
-    boost::shared_ptr<apache::thrift::transport::TSocket> s = boost::dynamic_pointer_cast<apache::thrift::transport::TSocket>( thrift_client->getOutputProtocol()->getOutputTransport() );
+    boost::shared_ptr<apache::thrift::transport::TTransport>            t1 = thrift_client->getOutputProtocol()->getOutputTransport();
+    boost::shared_ptr<apache::thrift::transport::TUnderlyingTransport>  t2 = boost::dynamic_pointer_cast<apache::thrift::transport::TUnderlyingTransport>(t1);
+    boost::shared_ptr<apache::thrift::transport::TTransport>            t3 = t2->getUnderlyingTransport();
+    boost::shared_ptr<apache::thrift::transport::TSocket>                s = boost::dynamic_pointer_cast<apache::thrift::transport::TSocket>(t3);
     s->setSendTimeout(send_timeout);
   }
 }
