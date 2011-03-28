@@ -27,13 +27,17 @@ int main(int argc, char ** argv) {
 		}
 		cassie_print_debug(cassie);
 
+		if (!cassie_set_keyspace(cassie, "Keyspace1")) {
+			printf("Error setting keyspace: %s\n", cassie_last_error_string(cassie));
+			return(1);
+		}
+
 		printf("Cassie generation %d: ", i);
 		for (j = 0; j < 10000; j++) {
 
 			// Write via friendly C-strings
 			k = cassie_insert_column(
 					cassie,
-					"Keyspace1",
 					"Standard2",
 					"joe",
 					NULL,
@@ -49,7 +53,6 @@ int main(int argc, char ** argv) {
 			// Read via friendly C-strings
 			v = cassie_get_column_value(
 					cassie,
-					"Keyspace1",
 					"Standard2",
 					"joe",
 					NULL,

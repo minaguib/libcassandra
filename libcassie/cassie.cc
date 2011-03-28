@@ -1,6 +1,6 @@
 /*
  * LibCassie
- * Copyright (C) 2010 Mina Naguib
+ * Copyright (C) 2010-2011 Mina Naguib
  * All rights reserved.
  *
  * Use and distribution licensed under the BSD license. See
@@ -54,6 +54,22 @@ namespace libcassie {
 			return(cassie);
 		}
 
+		int cassie_set_keyspace(cassie_t cassie, char * keyspace) {
+			try {
+				cassie->cassandra->setKeyspace(keyspace);
+			}
+			catch (org::apache::cassandra::InvalidRequestException &ire) {
+				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception: %s", ire.why.c_str());
+				return(0);
+			}
+			catch (const std::exception& e) {
+				cassie_set_error(cassie, CASSIE_ERROR_OTHER, "Exception %s: %s", typeid(e).name(), e.what());
+				return(0);
+			}
+			return 1;
+
+		}
+
 		void cassie_free(cassie_t cassie) {
 
 			if(!cassie) return;
@@ -75,17 +91,9 @@ namespace libcassie {
 				string clus_name= cassie->cassandra->getClusterName();
 				cout << "\tcluster name: " << clus_name << endl;
 
-				set<string> key_out= cassie->cassandra->getKeyspaces();
-				for (set<string>::iterator it = key_out.begin(); it != key_out.end(); ++it) {
-					cout << "\tkeyspace: " << *it << endl;
-				}
-
-				map<string, string> tokens= cassie->cassandra->getTokenMap(false);
-				for (map<string, string>::iterator it= tokens.begin();
-						it != tokens.end();
-						++it)
-				{
-					cout << "\t" << it->first << " : " << it->second << endl;
+				std::vector<KeyspaceDefinition> key_out= cassie->cassandra->getKeyspaces();
+				for (std::vector<KeyspaceDefinition>::iterator it = key_out.begin(); it != key_out.end(); ++it) {
+					cout << "\tkeyspace: " << it->getName() << endl;
 				}
 
 			}

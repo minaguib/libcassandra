@@ -1,6 +1,6 @@
 /*
  * LibCassie
- * Copyright (C) 2010 Mina Naguib
+ * Copyright (C) 2010-2011 Mina Naguib
  * All rights reserved.
  *
  * Use and distribution licensed under the BSD license. See
@@ -9,7 +9,6 @@
 
 #include <libcassandra/cassandra_factory.h>
 #include <libcassandra/cassandra.h>
-#include <libcassandra/keyspace.h>
 
 #include "cassie.h"
 #include "cassie_private.h"
@@ -23,19 +22,21 @@ namespace libcassie {
 
 		cassie_super_column_t cassie_get_super_column(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t super_column_name,
 				cassie_consistency_level_t level
 				) {
 
-			Keyspace *key_space;
 			string cpp_super_column_name(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
 
 			try {
-				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
-				org::apache::cassandra::SuperColumn cpp_super_column = key_space->getSuperColumn(key, column_family, cpp_super_column_name);
+				org::apache::cassandra::SuperColumn cpp_super_column = cassie->cassandra->getSuperColumn(
+						key,
+						column_family,
+						cpp_super_column_name,
+						(org::apache::cassandra::ConsistencyLevel::type) level
+						);
 				return(cassie_super_column_convert(cassie, cpp_super_column));
 			}
 			catch (org::apache::cassandra::NotFoundException &nfe) {
@@ -59,14 +60,12 @@ namespace libcassie {
 
 		cassie_super_column_t cassie_get_super_columns_by_names(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t *super_column_names,
 				cassie_consistency_level_t level
 				) {
 
-			Keyspace *key_space;
 			vector<string> cpp_super_column_names;
 			cassie_blob_t *blob;
 			cassie_super_column_t result = NULL, previous = NULL, latest = NULL;
@@ -77,8 +76,12 @@ namespace libcassie {
 			}
 
 			try {
-				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
-				vector<org::apache::cassandra::SuperColumn> cpp_super_columns = key_space->getSuperColumns(key, column_family, cpp_super_column_names);
+				vector<org::apache::cassandra::SuperColumn> cpp_super_columns = cassie->cassandra->getSuperColumns(
+						key,
+						column_family,
+						cpp_super_column_names,
+						(org::apache::cassandra::ConsistencyLevel::type) level
+						);
 				for (vector<org::apache::cassandra::SuperColumn>::iterator it = cpp_super_columns.begin(); it != cpp_super_columns.end(); ++it) {
 					latest = cassie_super_column_convert(cassie, *it);
 					if (result == NULL)
@@ -110,7 +113,6 @@ namespace libcassie {
 
 		cassie_super_column_t cassie_get_super_columns_by_range(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t start_name,
@@ -120,7 +122,6 @@ namespace libcassie {
 				cassie_consistency_level_t level
 				) {
 
-			Keyspace *key_space;
 			org::apache::cassandra::SliceRange range;
 			cassie_super_column_t result = NULL, previous = NULL, latest = NULL;
 
@@ -139,8 +140,12 @@ namespace libcassie {
 			}
 
 			try {
-				key_space = cassie->cassandra->getKeyspace(keyspace, (org::apache::cassandra::ConsistencyLevel)level);
-				vector<org::apache::cassandra::SuperColumn> cpp_super_columns = key_space->getSuperColumns(key, column_family, range);
+				vector<org::apache::cassandra::SuperColumn> cpp_super_columns = cassie->cassandra->getSuperColumns(
+						key,
+						column_family,
+						range,
+						(org::apache::cassandra::ConsistencyLevel::type) level
+						);
 				for (vector<org::apache::cassandra::SuperColumn>::iterator it = cpp_super_columns.begin(); it != cpp_super_columns.end(); ++it) {
 					latest = cassie_super_column_convert(cassie, *it);
 					if (result == NULL)

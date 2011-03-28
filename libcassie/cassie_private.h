@@ -1,6 +1,6 @@
 /*
  * LibCassie
- * Copyright (C) 2010 Mina Naguib
+ * Copyright (C) 2010-2011 Mina Naguib
  * All rights reserved.
  *
  * Use and distribution licensed under the BSD license.  See

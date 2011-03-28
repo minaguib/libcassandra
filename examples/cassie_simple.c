@@ -11,10 +11,10 @@ static int timeout = 1250;
 void crud_simple(cassie_t cassie) {
 
   char *v;
+  int success;
 
-  cassie_insert_column(
+  success = cassie_insert_column(
       cassie,
-      "Keyspace1",
       "Standard1",
       "bob",
       NULL,
@@ -22,10 +22,13 @@ void crud_simple(cassie_t cassie) {
       CASSIE_CTOB("20"),
       CASSIE_CONSISTENCY_LEVEL_ONE
       );
+  if (!success) {
+	  printf("Error inserting: %s\n", cassie_last_error_string(cassie));
+	  return;
+  }
 
   v = cassie_get_column_value(
       cassie,
-      "Keyspace1",
       "Standard1",
       "bob",
       NULL,
@@ -36,7 +39,6 @@ void crud_simple(cassie_t cassie) {
 
   cassie_insert_column(
       cassie,
-      "Keyspace1",
       "Standard1",
       "bob",
       NULL,
@@ -47,7 +49,6 @@ void crud_simple(cassie_t cassie) {
 
   v = cassie_get_column_value(
       cassie,
-      "Keyspace1",
       "Standard1",
       "bob",
       NULL,
@@ -64,7 +65,6 @@ void crud_super(cassie_t cassie) {
 
   cassie_insert_column(
       cassie,
-      "Keyspace1",
       "Super1",
       "bob",
       CASSIE_CTOB("attrs"),
@@ -75,7 +75,6 @@ void crud_super(cassie_t cassie) {
 
   v = cassie_get_column_value(
       cassie,
-      "Keyspace1",
       "Super1",
       "bob",
       CASSIE_CTOB("attrs"),
@@ -86,7 +85,6 @@ void crud_super(cassie_t cassie) {
 
   cassie_insert_column(
       cassie,
-      "Keyspace1",
       "Super1",
       "bob",
       CASSIE_CTOB("attrs"),
@@ -97,7 +95,6 @@ void crud_super(cassie_t cassie) {
 
   v = cassie_get_column_value(
       cassie,
-      "Keyspace1",
       "Super1",
       "bob",
       CASSIE_CTOB("attrs"),
@@ -115,7 +112,6 @@ void getcolumns_bykeys(cassie_t cassie) {
 
   cassie_insert_column(
       cassie,
-      "Keyspace1",
       "Standard1",
       "bob",
       NULL,
@@ -126,7 +122,6 @@ void getcolumns_bykeys(cassie_t cassie) {
 
   cassie_insert_column(
       cassie,
-      "Keyspace1",
       "Standard1",
       "bob",
       NULL,
@@ -141,7 +136,6 @@ void getcolumns_bykeys(cassie_t cassie) {
 
   columns = cassie_get_columns_by_names(
       cassie,
-      "Keyspace1",
       "Standard1",
       "bob",
       NULL,
@@ -163,7 +157,6 @@ void getcolumns_byrange(cassie_t cassie) {
 
   cassie_insert_column(
       cassie,
-      "Keyspace1",
       "Standard1",
       "bob",
       NULL,
@@ -175,7 +168,6 @@ void getcolumns_byrange(cassie_t cassie) {
 #define CIN(name, value)              \
   cassie_insert_column(               \
       cassie,                         \
-      "Keyspace1",                    \
       "Standard1",                    \
       "bob",                          \
       NULL,                           \
@@ -193,7 +185,6 @@ void getcolumns_byrange(cassie_t cassie) {
 
   columns = cassie_get_columns_by_range(
       cassie,
-      "Keyspace1",
       "Standard1",
       "bob",
       NULL,
@@ -222,7 +213,6 @@ void getsupercolumns_bykeys(cassie_t cassie) {
 #define SCIN(name1, name2, value)     \
   cassie_insert_column(               \
       cassie,                         \
-      "Keyspace1",                    \
       "Super1",                       \
       "bob",                          \
       CASSIE_CTOB(name1),             \
@@ -246,7 +236,6 @@ void getsupercolumns_bykeys(cassie_t cassie) {
 
   supercols = cassie_get_super_columns_by_names(
       cassie,
-      "Keyspace1",
       "Super1",
       "bob",
       names,
@@ -273,7 +262,6 @@ void getsupercolumns_byrange(cassie_t cassie) {
 #define SCIN(name1, name2, value)     \
   cassie_insert_column(               \
       cassie,                         \
-      "Keyspace1",                    \
       "Super1",                       \
       "bob",                          \
       CASSIE_CTOB(name1),             \
@@ -293,7 +281,6 @@ void getsupercolumns_byrange(cassie_t cassie) {
 
   supercols = cassie_get_super_columns_by_range(
       cassie,
-      "Keyspace1",
       "Super1",
       "bob",
       CASSIE_CTOB("friend2"),
@@ -324,6 +311,11 @@ int main(int argc, char ** argv) {
   // Not really needed, but for illustration:
   cassie_set_recv_timeout(cassie, timeout);
   cassie_set_send_timeout(cassie, timeout);
+
+  if (!cassie_set_keyspace(cassie, "Keyspace1")) {
+	  printf("Error setting keyspace: %s\n", cassie_last_error_string(cassie));
+	  return(1);
+  }
 
   printf("Simple CRUD:\n");
   crud_simple(cassie);

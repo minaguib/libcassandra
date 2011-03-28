@@ -1,6 +1,6 @@
 /*
  * LibCassie
- * Copyright (C) 2010 Mina Naguib
+ * Copyright (C) 2010-2011 Mina Naguib
  * All rights reserved.
  *
  * Use and distribution licensed under the BSD license.  See
@@ -24,11 +24,10 @@ namespace libcassie {
 		 */
 
 		typedef enum {
-			CASSIE_CONSISTENCY_LEVEL_ZERO          =  0,
 			CASSIE_CONSISTENCY_LEVEL_ONE           =  1,
 			CASSIE_CONSISTENCY_LEVEL_QUORUM        =  2,
-			CASSIE_CONSISTENCY_LEVEL_DCQUORUM      =  3,
-			CASSIE_CONSISTENCY_LEVEL_DCQUORUMSYNC  =  4,
+			CASSIE_CONSISTENCY_LEVEL_LOCAL_QUORUM  =  3,
+			CASSIE_CONSISTENCY_LEVEL_EACH_QUORUM   =  4,
 			CASSIE_CONSISTENCY_LEVEL_ALL           =  5,
 			CASSIE_CONSISTENCY_LEVEL_ANY           =  6
 		} cassie_consistency_level_t;
@@ -68,6 +67,9 @@ namespace libcassie {
 		 * Use cassie_free when done with it
 		 */
 		cassie_t cassie_init_with_timeout(const char * host, int port, int timeout);
+
+		/* Set the keyspace you'd like to use */
+		int cassie_set_keyspace(cassie_t cassie, char * keyspace);
 
 		/* Frees a cassie object initialied with cassie_init */
 		void cassie_free(cassie_t cassie);
@@ -168,7 +170,6 @@ namespace libcassie {
 		 */
 		int cassie_insert_column(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t super_column_name,
@@ -184,7 +185,6 @@ namespace libcassie {
 		 */
 		cassie_column_t cassie_get_column(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t super_column_name,
@@ -198,7 +198,6 @@ namespace libcassie {
 		 */
 		char * cassie_get_column_value(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t super_column_name,
@@ -214,7 +213,6 @@ namespace libcassie {
 		 */
 		cassie_column_t cassie_get_columns_by_names(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t super_column_name,
@@ -230,7 +228,6 @@ namespace libcassie {
 		 */
 		cassie_column_t cassie_get_columns_by_range(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t super_column_name,
@@ -251,7 +248,6 @@ namespace libcassie {
 		 */
 		cassie_super_column_t cassie_get_super_column(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t super_column_name,
@@ -265,7 +261,6 @@ namespace libcassie {
 		 */
 		cassie_super_column_t cassie_get_super_columns_by_names(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t *super_column_names,
@@ -279,7 +274,6 @@ namespace libcassie {
 		 */
 		cassie_super_column_t cassie_get_super_columns_by_range(
 				cassie_t cassie,
-				const char * keyspace,
 				const char * column_family,
 				const char * key,
 				cassie_blob_t start_name,

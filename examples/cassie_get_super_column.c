@@ -22,11 +22,15 @@ int main(int argc, char ** argv) {
 	}
 	cassie_print_debug(cassie);
 
+	if (!cassie_set_keyspace(cassie, "Keyspace1")) {
+		printf("Error setting keyspace: %s\n", cassie_last_error_string(cassie));
+		return(1);
+	}
+
 	/* Add columns in a supercolumn */
 #define ADDFRIEND(name) \
 	if (!cassie_insert_column( \
 				cassie, \
-				"Keyspace1", \
 				"Super2", \
 				"joe", \
 				CASSIE_CTOB("friends"), \
@@ -44,7 +48,7 @@ int main(int argc, char ** argv) {
 
 	while (++i) {
 
-		supercol = cassie_get_super_column(cassie, "Keyspace1", "Super2", "joe", CASSIE_CTOB("friends"), CASSIE_CONSISTENCY_LEVEL_ONE);
+		supercol = cassie_get_super_column(cassie, "Super2", "joe", CASSIE_CTOB("friends"), CASSIE_CONSISTENCY_LEVEL_ONE);
 		if (!supercol) {
 			printf("Failed to get super column: %s\n", cassie_last_error_string(cassie));
 			exit(1);
