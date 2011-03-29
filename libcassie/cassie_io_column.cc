@@ -25,13 +25,14 @@ namespace libcassie {
 		int cassie_insert_column(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t column_name,
 				cassie_blob_t value,
 				cassie_consistency_level_t level
 				) {
 
+			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
 			string(cpp_super_column_name);
 			if (super_column_name != NULL) {
 				cpp_super_column_name.assign(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
@@ -41,7 +42,7 @@ namespace libcassie {
 
 			try {
 				cassie->cassandra->insertColumn(
-						key,
+						cpp_key,
 						column_family,
 						cpp_super_column_name,
 						cpp_column_name,
@@ -70,12 +71,13 @@ namespace libcassie {
 		cassie_column_t cassie_get_column(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t column_name,
 				cassie_consistency_level_t level
 				) {
 
+			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
 			string(cpp_super_column_name);
 			if (super_column_name  != NULL) {
 				cpp_super_column_name.assign(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
@@ -84,7 +86,7 @@ namespace libcassie {
 
 			try {
 				org::apache::cassandra::Column cpp_column = cassie->cassandra->getColumn(
-						key,
+						cpp_key,
 						column_family,
 						cpp_super_column_name,
 						cpp_column_name,
@@ -114,12 +116,13 @@ namespace libcassie {
 		cassie_column_t cassie_get_columns_by_names(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t *column_names,
 				cassie_consistency_level_t level
 				) {
 
+			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
 			string(cpp_super_column_name);
 			vector<string> cpp_column_names;
 			cassie_blob_t *blob;
@@ -135,7 +138,7 @@ namespace libcassie {
 
 			try {
 				vector<org::apache::cassandra::Column> cpp_columns = cassie->cassandra->getColumns(
-						key,
+						cpp_key,
 						column_family,
 						cpp_super_column_name,
 						cpp_column_names,
@@ -173,7 +176,7 @@ namespace libcassie {
 		char * cassie_get_column_value(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t column_name,
 				cassie_consistency_level_t level
@@ -193,7 +196,7 @@ namespace libcassie {
 		cassie_column_t cassie_get_columns_by_range(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t start_name,
 				cassie_blob_t finish_name,
@@ -202,6 +205,7 @@ namespace libcassie {
 				cassie_consistency_level_t level
 				) {
 
+			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
 			string(cpp_super_column_name);
 			org::apache::cassandra::SliceRange range;
 			cassie_column_t result = NULL, previous = NULL, latest = NULL;
@@ -225,7 +229,7 @@ namespace libcassie {
 
 			try {
 				vector<org::apache::cassandra::Column> cpp_columns = cassie->cassandra->getColumns(
-						key,
+						cpp_key,
 						column_family,
 						cpp_super_column_name,
 						range,

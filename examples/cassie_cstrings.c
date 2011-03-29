@@ -39,7 +39,7 @@ int main(int argc, char ** argv) {
 			k = cassie_insert_column(
 					cassie,
 					"Standard2",
-					"joe",
+					CASSIE_CTOB("joe"),
 					NULL,
 					CASSIE_CTOB("age"),
 					CASSIE_CTOB("20"),
@@ -54,7 +54,7 @@ int main(int argc, char ** argv) {
 			v = cassie_get_column_value(
 					cassie,
 					"Standard2",
-					"joe",
+					CASSIE_CTOB("joe"),
 					NULL,
 					CASSIE_CTOB("age"),
 					CASSIE_CONSISTENCY_LEVEL_ONE

@@ -171,7 +171,7 @@ namespace libcassie {
 		int cassie_insert_column(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t column_name,
 				cassie_blob_t value,
@@ -186,7 +186,7 @@ namespace libcassie {
 		cassie_column_t cassie_get_column(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t column_name,
 				cassie_consistency_level_t level
@@ -199,7 +199,7 @@ namespace libcassie {
 		char * cassie_get_column_value(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t column_name,
 				cassie_consistency_level_t level
@@ -214,7 +214,7 @@ namespace libcassie {
 		cassie_column_t cassie_get_columns_by_names(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t *column_names,
 				cassie_consistency_level_t level
@@ -229,7 +229,7 @@ namespace libcassie {
 		cassie_column_t cassie_get_columns_by_range(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t start_name,
 				cassie_blob_t finish_name,
@@ -249,7 +249,7 @@ namespace libcassie {
 		cassie_super_column_t cassie_get_super_column(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_consistency_level_t level
 				);
@@ -262,7 +262,7 @@ namespace libcassie {
 		cassie_super_column_t cassie_get_super_columns_by_names(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t *super_column_names,
 				cassie_consistency_level_t level
 				);
@@ -275,7 +275,7 @@ namespace libcassie {
 		cassie_super_column_t cassie_get_super_columns_by_range(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t start_name,
 				cassie_blob_t finish_name,
 				short int reversed,

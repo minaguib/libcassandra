@@ -32,7 +32,7 @@ int main(int argc, char ** argv) {
 	if (!cassie_insert_column( \
 				cassie, \
 				"Super2", \
-				"joe", \
+				CASSIE_CTOB("joe"), \
 				CASSIE_CTOB("friends"), \
 				CASSIE_CTOB(name), \
 				CASSIE_CTOB("Happy"), \
@@ -48,7 +48,7 @@ int main(int argc, char ** argv) {
 
 	while (++i) {
 
-		supercol = cassie_get_super_column(cassie, "Super2", "joe", CASSIE_CTOB("friends"), CASSIE_CONSISTENCY_LEVEL_ONE);
+		supercol = cassie_get_super_column(cassie, "Super2", CASSIE_CTOB("joe"), CASSIE_CTOB("friends"), CASSIE_CONSISTENCY_LEVEL_ONE);
 		if (!supercol) {
 			printf("Failed to get super column: %s\n", cassie_last_error_string(cassie));
 			exit(1);

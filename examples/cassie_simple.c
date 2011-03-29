@@ -16,7 +16,7 @@ void crud_simple(cassie_t cassie) {
   success = cassie_insert_column(
       cassie,
       "Standard1",
-      "bob",
+      CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("age"),
       CASSIE_CTOB("20"),
@@ -30,7 +30,7 @@ void crud_simple(cassie_t cassie) {
   v = cassie_get_column_value(
       cassie,
       "Standard1",
-      "bob",
+      CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("age"),
       CASSIE_CONSISTENCY_LEVEL_ONE
@@ -40,7 +40,7 @@ void crud_simple(cassie_t cassie) {
   cassie_insert_column(
       cassie,
       "Standard1",
-      "bob",
+      CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("age"),
       CASSIE_CTOB("35"),
@@ -50,7 +50,7 @@ void crud_simple(cassie_t cassie) {
   v = cassie_get_column_value(
       cassie,
       "Standard1",
-      "bob",
+      CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("age"),
       CASSIE_CONSISTENCY_LEVEL_ONE
@@ -66,7 +66,7 @@ void crud_super(cassie_t cassie) {
   cassie_insert_column(
       cassie,
       "Super1",
-      "bob",
+      CASSIE_CTOB("bob"),
       CASSIE_CTOB("attrs"),
       CASSIE_CTOB("age"),
       CASSIE_CTOB("20"),
@@ -76,7 +76,7 @@ void crud_super(cassie_t cassie) {
   v = cassie_get_column_value(
       cassie,
       "Super1",
-      "bob",
+      CASSIE_CTOB("bob"),
       CASSIE_CTOB("attrs"),
       CASSIE_CTOB("age"),
       CASSIE_CONSISTENCY_LEVEL_ONE
@@ -86,7 +86,7 @@ void crud_super(cassie_t cassie) {
   cassie_insert_column(
       cassie,
       "Super1",
-      "bob",
+      CASSIE_CTOB("bob"),
       CASSIE_CTOB("attrs"),
       CASSIE_CTOB("age"),
       CASSIE_CTOB("35"),
@@ -96,7 +96,7 @@ void crud_super(cassie_t cassie) {
   v = cassie_get_column_value(
       cassie,
       "Super1",
-      "bob",
+      CASSIE_CTOB("bob"),
       CASSIE_CTOB("attrs"),
       CASSIE_CTOB("age"),
       CASSIE_CONSISTENCY_LEVEL_ONE
@@ -113,7 +113,7 @@ void getcolumns_bykeys(cassie_t cassie) {
   cassie_insert_column(
       cassie,
       "Standard1",
-      "bob",
+      CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("age"),
       CASSIE_CTOB("20"),
@@ -123,7 +123,7 @@ void getcolumns_bykeys(cassie_t cassie) {
   cassie_insert_column(
       cassie,
       "Standard1",
-      "bob",
+      CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("eyes"),
       CASSIE_CTOB("blue"),
@@ -137,7 +137,7 @@ void getcolumns_bykeys(cassie_t cassie) {
   columns = cassie_get_columns_by_names(
       cassie,
       "Standard1",
-      "bob",
+      CASSIE_CTOB("bob"),
       NULL,
       names,
       CASSIE_CONSISTENCY_LEVEL_ONE
@@ -158,7 +158,7 @@ void getcolumns_byrange(cassie_t cassie) {
   cassie_insert_column(
       cassie,
       "Standard1",
-      "bob",
+      CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("aaa1"),
       CASSIE_CTOB("vaaa1"),
@@ -169,7 +169,7 @@ void getcolumns_byrange(cassie_t cassie) {
   cassie_insert_column(               \
       cassie,                         \
       "Standard1",                    \
-      "bob",                          \
+      CASSIE_CTOB("bob"),                          \
       NULL,                           \
       CASSIE_CTOB(name),              \
       CASSIE_CTOB(value),             \
@@ -186,7 +186,7 @@ void getcolumns_byrange(cassie_t cassie) {
   columns = cassie_get_columns_by_range(
       cassie,
       "Standard1",
-      "bob",
+      CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("bbb1"),
       CASSIE_CTOB("bbb3"),
@@ -214,7 +214,7 @@ void getsupercolumns_bykeys(cassie_t cassie) {
   cassie_insert_column(               \
       cassie,                         \
       "Super1",                       \
-      "bob",                          \
+      CASSIE_CTOB("bob"),                          \
       CASSIE_CTOB(name1),             \
       CASSIE_CTOB(name2),             \
       CASSIE_CTOB(value),             \
@@ -237,7 +237,7 @@ void getsupercolumns_bykeys(cassie_t cassie) {
   supercols = cassie_get_super_columns_by_names(
       cassie,
       "Super1",
-      "bob",
+      CASSIE_CTOB("bob"),
       names,
       CASSIE_CONSISTENCY_LEVEL_ONE
       );
@@ -263,7 +263,7 @@ void getsupercolumns_byrange(cassie_t cassie) {
   cassie_insert_column(               \
       cassie,                         \
       "Super1",                       \
-      "bob",                          \
+      CASSIE_CTOB("bob"),             \
       CASSIE_CTOB(name1),             \
       CASSIE_CTOB(name2),             \
       CASSIE_CTOB(value),             \
@@ -282,7 +282,7 @@ void getsupercolumns_byrange(cassie_t cassie) {
   supercols = cassie_get_super_columns_by_range(
       cassie,
       "Super1",
-      "bob",
+      CASSIE_CTOB("bob"),
       CASSIE_CTOB("friend2"),
       CASSIE_CTOB("friend3"),
       0,

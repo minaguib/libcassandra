@@ -46,7 +46,7 @@ int main(int argc, char ** argv) {
 			k = cassie_insert_column(
 					cassie,
 					"Standard2",
-					"joe",
+					CASSIE_CTOB("joe"),
 					NULL,
 					CASSIE_CTOB("pic"),
 					image,
@@ -61,7 +61,7 @@ int main(int argc, char ** argv) {
 			col_out = cassie_get_column(
 					cassie,
 					"Standard2",
-					"joe",
+					CASSIE_CTOB("joe"),
 					NULL,
 					CASSIE_CTOB("pic"),
 					CASSIE_CONSISTENCY_LEVEL_ONE

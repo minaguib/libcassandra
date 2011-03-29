@@ -23,16 +23,17 @@ namespace libcassie {
 		cassie_super_column_t cassie_get_super_column(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_consistency_level_t level
 				) {
 
+			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
 			string cpp_super_column_name(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
 
 			try {
 				org::apache::cassandra::SuperColumn cpp_super_column = cassie->cassandra->getSuperColumn(
-						key,
+						cpp_key,
 						column_family,
 						cpp_super_column_name,
 						(org::apache::cassandra::ConsistencyLevel::type) level
@@ -61,11 +62,12 @@ namespace libcassie {
 		cassie_super_column_t cassie_get_super_columns_by_names(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t *super_column_names,
 				cassie_consistency_level_t level
 				) {
 
+			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
 			vector<string> cpp_super_column_names;
 			cassie_blob_t *blob;
 			cassie_super_column_t result = NULL, previous = NULL, latest = NULL;
@@ -77,7 +79,7 @@ namespace libcassie {
 
 			try {
 				vector<org::apache::cassandra::SuperColumn> cpp_super_columns = cassie->cassandra->getSuperColumns(
-						key,
+						cpp_key,
 						column_family,
 						cpp_super_column_names,
 						(org::apache::cassandra::ConsistencyLevel::type) level
@@ -114,7 +116,7 @@ namespace libcassie {
 		cassie_super_column_t cassie_get_super_columns_by_range(
 				cassie_t cassie,
 				const char * column_family,
-				const char * key,
+				cassie_blob_t key,
 				cassie_blob_t start_name,
 				cassie_blob_t finish_name,
 				short int reversed,
@@ -122,6 +124,7 @@ namespace libcassie {
 				cassie_consistency_level_t level
 				) {
 
+			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
 			org::apache::cassandra::SliceRange range;
 			cassie_super_column_t result = NULL, previous = NULL, latest = NULL;
 
@@ -141,7 +144,7 @@ namespace libcassie {
 
 			try {
 				vector<org::apache::cassandra::SuperColumn> cpp_super_columns = cassie->cassandra->getSuperColumns(
-						key,
+						cpp_key,
 						column_family,
 						range,
 						(org::apache::cassandra::ConsistencyLevel::type) level
