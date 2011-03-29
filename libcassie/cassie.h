@@ -103,7 +103,7 @@ namespace libcassie {
 		 * You should not use it as a "blob creator".  Use cassie_blob_init instead for that
 		 * You should ESPECIALLY not use it in a loop to create blobs and store them in an array
 		 */
-#define CASSIE_CTOB(cstr) (&(struct _cassie_blob) {cstr, (cstr ? strlen(cstr) : 0)} )
+#define CASSIE_CTOB(cstr) (&(struct _cassie_blob) {(cstr), ((cstr) ? strlen((cstr)) : 0)} )
 
 		/* Returns the underlying data of the blob
 		 * Notice that if you treat this as a C string, it will be safe but may be LOSSY:
