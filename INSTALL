@@ -300,3 +300,5 @@ operates.
 `configure' also accepts some other, not widely useful, options.  Run
 `configure --help' for more details.
 
+env CPPFLAGS="-I/opt/include -I/opt/include/thrift" CXXFLAGS="-DT_GLOBAL_DEBUG_VIRTUAL=0 -Wno-variadic-macros -Wno-overloaded-virtual" ./configure --prefix=/opt
+
