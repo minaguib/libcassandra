@@ -70,6 +70,23 @@ namespace libcassie {
 
 		}
 
+		int cassie_set_keyspace_blob(cassie_t cassie, cassie_blob_t keyspace) {
+			try {
+	            string cpp_keyspace(CASSIE_BDATA(keyspace), CASSIE_BLENGTH(keyspace));
+				cassie->cassandra->setKeyspace(cpp_keyspace);
+			}
+			catch (org::apache::cassandra::InvalidRequestException &ire) {
+				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception: %s", ire.why.c_str());
+				return(0);
+			}
+			catch (const std::exception& e) {
+				cassie_set_error(cassie, CASSIE_ERROR_OTHER, "Exception %s: %s", typeid(e).name(), e.what());
+				return(0);
+			}
+			return 1;
+
+		}
+
 		void cassie_free(cassie_t cassie) {
 
 			if(!cassie) return;
