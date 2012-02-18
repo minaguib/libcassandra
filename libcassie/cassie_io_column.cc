@@ -24,7 +24,7 @@ namespace libcassie {
 
 		int cassie_insert_column(
 				cassie_t cassie,
-				const char * column_family,
+                cassie_blob_t column_family,
 				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t column_name,
@@ -32,6 +32,7 @@ namespace libcassie {
 				cassie_consistency_level_t level
 				) {
 
+			string cpp_column_family(CASSIE_BDATA(column_family), CASSIE_BLENGTH(column_family));
 			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
 			string(cpp_super_column_name);
 			if (super_column_name != NULL) {
@@ -43,7 +44,7 @@ namespace libcassie {
 			try {
 				cassie->cassandra->insertColumn(
 						cpp_key,
-						column_family,
+						cpp_column_family,
 						cpp_super_column_name,
 						cpp_column_name,
 						cpp_value,
