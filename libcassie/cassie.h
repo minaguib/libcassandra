@@ -66,6 +66,7 @@ namespace libcassie {
 		 * timeout set for connecting, receiving and sending
 		 * Use cassie_free when done with it
 		 */
+		cassie_t cassie_init_with_timeout_blob(cassie_blob_t host, int port, int timeout);
 		cassie_t cassie_init_with_timeout(const char * host, int port, int timeout);
 
 		/* Set the keyspace you'd like to use */
@@ -74,6 +75,7 @@ namespace libcassie {
 
 		/* Frees a cassie object initialied with cassie_init */
 		void cassie_free(cassie_t cassie);
+		void cassie_free_blob(cassie_t cassie);
 
 		void cassie_print_debug(cassie_t cassie);
 
