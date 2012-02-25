@@ -24,7 +24,6 @@ KeyspaceDefinition::KeyspaceDefinition()
     name(),
     strategy_class("org.apache.cassandra.locator.SimpleStrategy"),
     strategy_options(),
-    replication_factor(1),
     col_family_defs()
 {
     strategy_options.insert(pair<string,string>("replication_factor","1"));
@@ -34,7 +33,6 @@ KeyspaceDefinition::KeyspaceDefinition()
 KeyspaceDefinition::KeyspaceDefinition(const string& in_name,
                                        const string& in_strategy_class,
                                        const map<string, string>& in_strategy_options,
-                                       const int32_t in_replication_factor,
                                        vector<CfDef>& in_cf_defs)
   :
     name(in_name),
