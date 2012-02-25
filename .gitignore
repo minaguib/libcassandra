@@ -28,8 +28,19 @@
 /libcassandra/.dirstamp
 /libcassandra/.libs/
 /libcassandra/configure.h
+/libcassandra/util/.deps/
+/libcassandra/util/.dirstamp
+
+/tests/.deps/
+/tests/.dirstamp
+/tests/.libs/
+/tests/configure.h
+/tests/tests
 
 /libcassie/.deps/
 /libcassie/.dirstamp
 /libcassie/.libs/
 /libcassie/configure.h
+
+.cproject
+.project

@@ -31,7 +31,7 @@ namespace libcassie {
 		cassie_t cassie_init_with_timeout_blob(cassie_blob_t host, int port, int timeout) {
 
 			cassie_t cassie;
-			std::tr1::shared_ptr<libcassandra::Cassandra> cassandra;
+			boost::shared_ptr<libcassandra::Cassandra> cassandra;
 
 			if (!host) return(NULL);
             string cpp_host(CASSIE_BDATA(host), CASSIE_BLENGTH(host));
@@ -58,7 +58,7 @@ namespace libcassie {
 		cassie_t cassie_init_with_timeout(const char * host, int port, int timeout) {
 
 			cassie_t cassie;
-			std::tr1::shared_ptr<libcassandra::Cassandra> cassandra;
+			boost::shared_ptr<libcassandra::Cassandra> cassandra;
 
 			if (!host) return(NULL);
 

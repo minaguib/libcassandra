@@ -66,13 +66,8 @@ CassandraFactory::CassandraFactory(const string& in_host, int in_port)
   url.append(port_str.str());
 }
 
-CassandraFactory::CassandraFactory(const string &in_host, int in_port, int in_timeout)
+CassandraFactory::CassandraFactory(const string& in_host, int in_port, int in_timeout)
   :
-    host(in_host),
-    port(in_port),
-    conn_timeout(in_timeout),
-    recv_timeout(in_timeout),
-    send_timeout(in_timeout)
     url(),
     host(in_host),
     port(in_port),
@@ -119,11 +114,6 @@ CassandraClient *CassandraFactory::createThriftClient(const string &in_host,
   }
   if (in_recv_timeout >= 0) {
     socket->setRecvTimeout(in_recv_timeout);
-  }
-  if (in_send_timeout >= 0) {
-    socket->setSendTimeout(in_send_timeout);
-  }
-
   }
   if (in_send_timeout >= 0) {
     socket->setSendTimeout(in_send_timeout);

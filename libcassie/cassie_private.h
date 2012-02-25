@@ -13,14 +13,16 @@
 
 /* Not for public consumption, not in C space: */
 
+#include <boost/shared_ptr.hpp>
+
 namespace libcassie {
 
 	struct _cassie {
-		char *														host;
+		char *													host;
 		int															port;
-		cassie_error_code_t										last_error_code;
-		char *														last_error_string;
-		std::tr1::shared_ptr<libcassandra::Cassandra>	cassandra;
+		cassie_error_code_t							last_error_code;
+		char *													last_error_string;
+		boost::shared_ptr<libcassandra::Cassandra>	cassandra;
 	};
 
 	struct _cassie_column {
