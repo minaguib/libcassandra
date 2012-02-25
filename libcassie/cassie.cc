@@ -59,6 +59,7 @@ namespace libcassie {
 
 			cassie_t cassie;
 			boost::shared_ptr<libcassandra::Cassandra> cassandra;
+			std::tr1::shared_ptr<libcassandra::Cassandra> cassandra;
 
 			if (!host) return(NULL);
 

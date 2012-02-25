@@ -42,5 +42,5 @@ $ gcc file.c -lcassie
 == Copyright
 
 Copyright (c) 2010 Padraig O'Sullivan.
-Copyright (c) 2010 Mina Naguib.
+Copyright (c) 2011 Mina Naguib.
 See COPYING for details.
