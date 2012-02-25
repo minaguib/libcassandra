@@ -17,6 +17,8 @@
 
 #include "libgenthrift/Cassandra.h"
 
+#include <boost/shared_ptr.hpp>
+
 #include "libcassandra/cassandra.h"
 #include "libcassandra/cassandra_factory.h"
 
@@ -83,18 +85,18 @@ CassandraFactory::CassandraFactory(const string& in_host, int in_port, int in_ti
 CassandraFactory::~CassandraFactory() {}
 
 
-tr1::shared_ptr<Cassandra> CassandraFactory::create()
+boost::shared_ptr<Cassandra> CassandraFactory::create()
 {
   CassandraClient *thrift_client= createThriftClient(host, port, conn_timeout, recv_timeout, send_timeout);
-  tr1::shared_ptr<Cassandra> ret(new Cassandra(thrift_client, host, port));
+  boost::shared_ptr<Cassandra> ret(new Cassandra(thrift_client, host, port));
   return ret;
 }
 
 
-tr1::shared_ptr<Cassandra> CassandraFactory::create(const string& keyspace)
+boost::shared_ptr<Cassandra> CassandraFactory::create(const string& keyspace)
 {
   CassandraClient *thrift_client= createThriftClient(host, port, conn_timeout, recv_timeout, send_timeout);
-  tr1::shared_ptr<Cassandra> ret(new Cassandra(thrift_client, host, port, keyspace));
+  boost::shared_ptr<Cassandra> ret(new Cassandra(thrift_client, host, port, keyspace));
   return ret;
 }
 

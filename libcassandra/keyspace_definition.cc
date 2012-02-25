@@ -26,7 +26,9 @@ KeyspaceDefinition::KeyspaceDefinition()
     strategy_options(),
     replication_factor(1),
     col_family_defs()
-{}
+{
+    strategy_options.insert(pair<string,string>("replication_factor","1"));
+}
 
 
 KeyspaceDefinition::KeyspaceDefinition(const string& in_name,
@@ -46,6 +48,7 @@ KeyspaceDefinition::KeyspaceDefinition(const string& in_name,
        ++it)
   {
     CfDef thrift_entry= *it;
+
     ColumnFamilyDefinition entry(thrift_entry.keyspace,
                                  thrift_entry.name,
                                  thrift_entry.column_type,
@@ -62,10 +65,8 @@ KeyspaceDefinition::KeyspaceDefinition(const string& in_name,
                                  thrift_entry.min_compaction_threshold,
                                  thrift_entry.max_compaction_threshold,
                                  thrift_entry.row_cache_save_period_in_seconds,
-                                 thrift_entry.key_cache_save_period_in_seconds,
-                                 thrift_entry.memtable_flush_after_mins,
-                                 thrift_entry.memtable_throughput_in_mb,
-                                 thrift_entry.memtable_operations_in_millions);
+                                 thrift_entry.key_cache_save_period_in_seconds);
+
     col_family_defs.push_back(entry);
   }
 }
@@ -103,7 +104,7 @@ map<string, string> KeyspaceDefinition::getStrategyOptions() const
 
 void KeyspaceDefinition::setStrategyOptions(const map<string, string>& opts)
 {
-  (void) opts;
+  strategy_options.insert(opts.begin(), opts.end());
 }
 
 
@@ -112,12 +113,10 @@ int32_t KeyspaceDefinition::getReplicationFactor() const
   return replication_factor;
 }
 
-
 void KeyspaceDefinition::setReplicationFactor(int32_t rep_factor)
 {
   replication_factor= rep_factor;
 }
-
 
 vector<ColumnFamilyDefinition> KeyspaceDefinition::getColumnFamilies() const
 {

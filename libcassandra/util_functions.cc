@@ -71,6 +71,12 @@ KsDef createKsDefObject(const KeyspaceDefinition& ks_def)
   KsDef thrift_ks_def;
   thrift_ks_def.name.assign(ks_def.getName());
   thrift_ks_def.strategy_class.assign(ks_def.getStrategyClass());
+  if (!ks_def.getStrategyOptions().empty()) {
+      thrift_ks_def.__isset.strategy_options = true;
+      const map<string, string>& strategy_options = ks_def.getStrategyOptions();
+      thrift_ks_def.strategy_options.insert(strategy_options.begin(),
+              strategy_options.end());
+  }
   vector<ColumnFamilyDefinition> cf_defs= ks_def.getColumnFamilies();
   for (vector<ColumnFamilyDefinition>::iterator it= cf_defs.begin();
        it != cf_defs.end();
@@ -153,21 +159,6 @@ CfDef createCfDefObject(const ColumnFamilyDefinition& cf_def)
   {
     thrift_cf_def.min_compaction_threshold= cf_def.getMinCompactionThreshold();
     thrift_cf_def.__isset.min_compaction_threshold= true;
-  }
-  if (cf_def.isMemtableFlushAfterMinsSet())
-  {
-    thrift_cf_def.memtable_flush_after_mins= cf_def.getMemtableFlushAfterMins();
-    thrift_cf_def.__isset.memtable_flush_after_mins= true;
-  }
-  if (cf_def.isMemtableOperationsInMillionsSet())
-  {
-    thrift_cf_def.memtable_operations_in_millions= cf_def.getMemtableOperationsInMillions();
-    thrift_cf_def.__isset.memtable_operations_in_millions= true;
-  }
-  if (cf_def.isMemtableThroughputInMbSet())
-  {
-    thrift_cf_def.memtable_throughput_in_mb= cf_def.getMemtableThroughputInMb();
-    thrift_cf_def.__isset.memtable_throughput_in_mb= cf_def.getMemtableThroughputInMb();
   }
   if (cf_def.isColumnMetadataSet())
   {

@@ -14,7 +14,7 @@ using namespace ::apache::thrift::server;
 
 using boost::shared_ptr;
 
-using namespace org::apache::cassandra;
+using namespace  ::org::apache::cassandra;
 
 class CassandraHandler : virtual public CassandraIf {
  public:
@@ -72,9 +72,19 @@ class CassandraHandler : virtual public CassandraIf {
     printf("insert\n");
   }
 
+  void add(const std::string& key, const ColumnParent& column_parent, const CounterColumn& column, const ConsistencyLevel::type consistency_level) {
+    // Your implementation goes here
+    printf("add\n");
+  }
+
   void remove(const std::string& key, const ColumnPath& column_path, const int64_t timestamp, const ConsistencyLevel::type consistency_level) {
     // Your implementation goes here
     printf("remove\n");
+  }
+
+  void remove_counter(const std::string& key, const ColumnPath& path, const ConsistencyLevel::type consistency_level) {
+    // Your implementation goes here
+    printf("remove_counter\n");
   }
 
   void batch_mutate(const std::map<std::string, std::map<std::string, std::vector<Mutation> > > & mutation_map, const ConsistencyLevel::type consistency_level) {
@@ -160,6 +170,11 @@ class CassandraHandler : virtual public CassandraIf {
   void system_update_column_family(std::string& _return, const CfDef& cf_def) {
     // Your implementation goes here
     printf("system_update_column_family\n");
+  }
+
+  void execute_cql_query(CqlResult& _return, const std::string& query, const Compression::type compression) {
+    // Your implementation goes here
+    printf("execute_cql_query\n");
   }
 
 };

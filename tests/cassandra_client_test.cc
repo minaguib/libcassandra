@@ -12,11 +12,11 @@
 #include <iostream>
 #include <sstream>
 
+#include <gtest/gtest.h>
+
 #include <protocol/TBinaryProtocol.h>
 #include <transport/TSocket.h>
 #include <transport/TTransportUtils.h>
-
-#include <gtest/gtest.h>
 
 #include <libgenthrift/Cassandra.h>
 #include <libcassandra/cassandra.h>
@@ -25,6 +25,7 @@
 #include <libcassandra/indexed_slices_query.h>
 #include <libcassandra/keyspace.h>
 #include <libcassandra/keyspace_definition.h>
+#include <boost/shared_ptr.hpp>
 
 using namespace std;
 using namespace libcassandra;
@@ -42,12 +43,12 @@ protected:
   {
     const string host("localhost");
     int port= 9160;
-    cf= tr1::shared_ptr<CassandraFactory>(new CassandraFactory(host, port));
-    c= tr1::shared_ptr<Cassandra>(cf->create());
+    cf= boost::shared_ptr<CassandraFactory>(new CassandraFactory(host, port));
+    c= boost::shared_ptr<Cassandra>(cf->create());
   }
 
-  tr1::shared_ptr<CassandraFactory> cf;
-  tr1::shared_ptr<Cassandra> c;
+  boost::shared_ptr<CassandraFactory> cf;
+  boost::shared_ptr<Cassandra> c;
 };
 
 
@@ -56,7 +57,6 @@ TEST(Cassandra, DefaultConstructor)
   const Cassandra c;
   EXPECT_EQ(0, c.getPort());
 }
-
 
 TEST(Cassandra, ConsructorFromHostAndPort)
 {
@@ -85,7 +85,7 @@ TEST(Cassandra, GetServerVersion)
   CassandraClient *client= new CassandraClient(protocol);
   transport->open();
   Cassandra c(client, host, port);
-  const string version("19.4.0");
+  const string version("19.20.0");
   EXPECT_EQ(version, c.getServerVersion());
   EXPECT_STREQ(version.c_str(), c.getServerVersion().c_str());
 }
@@ -101,7 +101,7 @@ TEST(Cassandra, GetClusterName)
   CassandraClient *client= new CassandraClient(protocol);
   transport->open();
   Cassandra c(client, host, port);
-  const string name("Test Cluster");
+  const string name("goldgriff");
   EXPECT_EQ(name, c.getClusterName());
   EXPECT_STREQ(name.c_str(), c.getClusterName().c_str());
 }
@@ -119,12 +119,13 @@ TEST(Cassandra, GetKeyspaces)
   Cassandra c(client, host, port);
   vector<KeyspaceDefinition> keyspaces= c.getKeyspaces();
   /* we assume the test server only has 1 keyspace: system */
-  EXPECT_EQ(1, keyspaces.size());
+  EXPECT_EQ(2, keyspaces.size());
 }
 
 
 TEST_F(ClientTest, InsertColumn)
 {
+  printf("(starting test InsertColumn)\n");
   const string mock_data("this is mock data being inserted...");
   KeyspaceDefinition ks_def;
   ks_def.setName("unittest");

@@ -51,5 +51,5 @@ TEST(CassandraFactory, CreateClientWithServer)
 {
   const string url("localhost:9160");
   CassandraFactory cf(url);
-  tr1::shared_ptr<Cassandra> client= cf.create();
+  boost::shared_ptr<Cassandra> client= cf.create();
 }

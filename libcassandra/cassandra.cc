@@ -15,6 +15,8 @@
 #include <sstream>
 #include <iostream>
 
+#include <boost/shared_ptr.hpp>
+
 #include "libgenthrift/Cassandra.h"
 #include <transport/TSocket.h>
 #include <transport/TBufferTransports.h>
@@ -151,7 +153,9 @@ void Cassandra::insertColumn(const string& key,
   Column col;
   col.name.assign(column_name);
   col.value.assign(value);
-  col.timestamp= createTimestamp();
+  col.__isset.value = true;
+  col.timestamp = createTimestamp();
+  col.__isset.timestamp = true;
   if (ttl) 
   {
     col.ttl=ttl;
