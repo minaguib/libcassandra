@@ -701,7 +701,6 @@ vector<KeyspaceDefinition> Cassandra::getKeyspaces()
       KeyspaceDefinition entry(thrift_entry.name,
                                thrift_entry.strategy_class,
                                thrift_entry.strategy_options,
-                               thrift_entry.replication_factor,
                                thrift_entry.cf_defs);
       key_spaces.push_back(entry);
     }

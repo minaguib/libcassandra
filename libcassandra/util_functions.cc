@@ -85,7 +85,6 @@ KsDef createKsDefObject(const KeyspaceDefinition& ks_def)
     CfDef entry= createCfDefObject(*it);
     thrift_ks_def.cf_defs.push_back(entry);
   }
-  thrift_ks_def.replication_factor= ks_def.getReplicationFactor();
   return thrift_ks_def;
 }
 

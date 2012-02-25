@@ -58,12 +58,16 @@ public:
   void setStrategyOptions(const std::map<std::string, std::string>& opts);
 
   /**
+   * @return replication factor for this keyspace
+   */
+  int32_t getReplicationFactor() const;
+
+  void setReplicationFactor(int32_t rep_factor);
   * @return replication factor for this keyspace
   */
   int32_t getReplicationFactor() const;
 
   void setReplicationFactor(int32_t rep_factor);
-  /**
    * @return the column families in this keyspace
    */
   std::vector<ColumnFamilyDefinition> getColumnFamilies() const;
@@ -77,8 +81,6 @@ private:
   std::string strategy_class;
 
   std::map<std::string, std::string> strategy_options;
-
-  int32_t replication_factor;
 
   std::vector<ColumnFamilyDefinition> col_family_defs;
 

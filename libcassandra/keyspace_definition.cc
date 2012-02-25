@@ -40,7 +40,6 @@ KeyspaceDefinition::KeyspaceDefinition(const string& in_name,
     name(in_name),
     strategy_class(in_strategy_class),
     strategy_options(in_strategy_options),
-    replication_factor(in_replication_factor),
     col_family_defs()
 {
   for (vector<CfDef>::iterator it= in_cf_defs.begin();
@@ -107,16 +106,6 @@ void KeyspaceDefinition::setStrategyOptions(const map<string, string>& opts)
   strategy_options.insert(opts.begin(), opts.end());
 }
 
-
-int32_t KeyspaceDefinition::getReplicationFactor() const
-{
-  return replication_factor;
-}
-
-void KeyspaceDefinition::setReplicationFactor(int32_t rep_factor)
-{
-  replication_factor= rep_factor;
-}
 
 vector<ColumnFamilyDefinition> KeyspaceDefinition::getColumnFamilies() const
 {
