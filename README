@@ -21,6 +21,7 @@ $ make
 $ make install
 
 == Running unit tests
+== Compiling C++ apps with libcassandra
 
 If Google's C++ unit test framework, gtest, is installed on your machine, the unit tests can be run.
 
@@ -28,7 +29,6 @@ $ make check
 
 The unit tests require a cassandra server with the default out of the box storage-conf.xml file to be running.
 
-== Compiling C++ apps with libcassandra
 
 $ g++ file.cc -lcassandra -lthrift -I/usr/local/include/thrift
 

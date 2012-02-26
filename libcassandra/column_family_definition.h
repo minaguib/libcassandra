@@ -27,7 +27,12 @@ class ColumnFamilyDefinition
 {
 
 public:
-
+    /**
+     * removing:
+     *  thrift_entry.memtable_flush_after_mins,
+        thrift_entry.memtable_throughput_in_mb,
+        thrift_entry.memtable_operations_in_millions);
+     */
   ColumnFamilyDefinition();
   ColumnFamilyDefinition(const std::string& in_keyspace_name,
                          const std::string& in_name,
@@ -45,10 +50,7 @@ public:
                          const int32_t in_min_compaction_threshold,
                          const int32_t in_max_compaction_threshold,
                          const int32_t in_row_cache_save_period_in_seconds,
-                         const int32_t in_key_cache_save_period_in_seconds,
-                         const int32_t in_memtable_flush_after_mins,
-                         const int32_t in_memtable_throughput_in_mb,
-                         const double in_memtable_operations_in_millions);
+                         const int32_t in_key_cache_save_period_in_seconds);
   ~ColumnFamilyDefinition() {}
 
   /**
@@ -298,12 +300,6 @@ private:
   int32_t row_cache_save_period_in_seconds;
 
   int32_t key_cache_save_period_in_seconds;
-
-  int32_t memtable_flush_after_mins;
-
-  int32_t memtable_throughput_in_mb;
-
-  double memtable_operations_in_millions;
 
   std::vector<ColumnDefinition> column_metadata;
 

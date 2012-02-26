@@ -28,10 +28,37 @@ namespace libcassie {
 			return cassie_init_with_timeout(host, port, -1);
 		}
 
+		cassie_t cassie_init_with_timeout_blob(cassie_blob_t host, int port, int timeout) {
+
+			cassie_t cassie;
+			boost::shared_ptr<libcassandra::Cassandra> cassandra;
+
+			if (!host) return(NULL);
+            string cpp_host(CASSIE_BDATA(host), CASSIE_BLENGTH(host));
+
+			try {
+				CassandraFactory factory(cpp_host, port, timeout);
+				cassandra = factory.create();
+			}
+			catch (const std::exception& e) {
+				cout << "Exception " << typeid(e).name() << ": " << e.what() << endl;
+				return(NULL);
+			}
+
+			cassie = new _cassie;
+			cassie->host					= CASSIE_BDATA(host);
+			cassie->port					= port;
+			cassie->last_error_string	= NULL;
+			cassie->last_error_code		= CASSIE_ERROR_NONE;
+			cassie->cassandra				= cassandra;
+
+			return(cassie);
+		}
+
 		cassie_t cassie_init_with_timeout(const char * host, int port, int timeout) {
 
 			cassie_t cassie;
-			std::tr1::shared_ptr<libcassandra::Cassandra> cassandra;
+			boost::shared_ptr<libcassandra::Cassandra> cassandra;
 
 			if (!host) return(NULL);
 
@@ -67,6 +94,32 @@ namespace libcassie {
 				return(0);
 			}
 			return 1;
+
+		}
+
+		int cassie_set_keyspace_blob(cassie_t cassie, cassie_blob_t keyspace) {
+			try {
+	            string cpp_keyspace(CASSIE_BDATA(keyspace), CASSIE_BLENGTH(keyspace));
+				cassie->cassandra->setKeyspace(cpp_keyspace);
+			}
+			catch (org::apache::cassandra::InvalidRequestException &ire) {
+				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception: %s", ire.why.c_str());
+				return(0);
+			}
+			catch (const std::exception& e) {
+				cassie_set_error(cassie, CASSIE_ERROR_OTHER, "Exception %s: %s", typeid(e).name(), e.what());
+				return(0);
+			}
+			return 1;
+
+		}
+
+		void cassie_free_blob(cassie_t cassie) {
+
+			if(!cassie) return;
+			cassie_set_error(cassie, CASSIE_ERROR_NONE, NULL);
+
+			delete(cassie);
 
 		}
 

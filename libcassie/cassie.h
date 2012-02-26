@@ -66,13 +66,16 @@ namespace libcassie {
 		 * timeout set for connecting, receiving and sending
 		 * Use cassie_free when done with it
 		 */
+		cassie_t cassie_init_with_timeout_blob(cassie_blob_t host, int port, int timeout);
 		cassie_t cassie_init_with_timeout(const char * host, int port, int timeout);
 
 		/* Set the keyspace you'd like to use */
 		int cassie_set_keyspace(cassie_t cassie, char * keyspace);
+		int cassie_set_keyspace_blob(cassie_t cassie, cassie_blob_t keyspace);
 
 		/* Frees a cassie object initialied with cassie_init */
 		void cassie_free(cassie_t cassie);
+		void cassie_free_blob(cassie_t cassie);
 
 		void cassie_print_debug(cassie_t cassie);
 
@@ -170,7 +173,7 @@ namespace libcassie {
 		 */
 		int cassie_insert_column(
 				cassie_t cassie,
-				const char * column_family,
+				cassie_blob_t column_family,
 				cassie_blob_t key,
 				cassie_blob_t super_column_name,
 				cassie_blob_t column_name,

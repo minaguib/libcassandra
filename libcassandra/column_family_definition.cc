@@ -18,6 +18,13 @@ using namespace libcassandra;
 using namespace std;
 using namespace org::apache::cassandra;
 
+/**
+     * removing:
+     *  thrift_entry.memtable_flush_after_mins,
+        thrift_entry.memtable_throughput_in_mb,
+        thrift_entry.memtable_operations_in_millions);
+     */
+
 
 ColumnFamilyDefinition::ColumnFamilyDefinition()
   :
@@ -37,9 +44,6 @@ ColumnFamilyDefinition::ColumnFamilyDefinition()
     max_compaction_threshold(22),
     row_cache_save_period_in_seconds(0),
     key_cache_save_period_in_seconds(0),
-    memtable_flush_after_mins(60),
-    memtable_throughput_in_mb(0),
-    memtable_operations_in_millions(0.0),
     column_metadata()
 {}
 
@@ -60,10 +64,7 @@ ColumnFamilyDefinition::ColumnFamilyDefinition(const string& in_keyspace_name,
                                                const int32_t in_min_compaction_threshold,
                                                const int32_t in_max_compaction_threshold,
                                                const int32_t in_row_cache_save_period_in_seconds,
-                                               const int32_t in_key_cache_save_period_in_seconds,
-                                               const int32_t in_memtable_flush_after_mins,
-                                               const int32_t in_memtable_throughput_in_mb,
-                                               const double in_memtable_operations_in_millions)
+                                               const int32_t in_key_cache_save_period_in_seconds)
   :
     keyspace_name(in_keyspace_name),
     name(in_name),
@@ -81,9 +82,6 @@ ColumnFamilyDefinition::ColumnFamilyDefinition(const string& in_keyspace_name,
     max_compaction_threshold(in_max_compaction_threshold),
     row_cache_save_period_in_seconds(in_row_cache_save_period_in_seconds),
     key_cache_save_period_in_seconds(in_key_cache_save_period_in_seconds),
-    memtable_flush_after_mins(in_memtable_flush_after_mins),
-    memtable_throughput_in_mb(in_memtable_throughput_in_mb),
-    memtable_operations_in_millions(in_memtable_operations_in_millions),
     column_metadata()
 {
   for (vector<ColumnDef>::iterator it= in_column_metadata.begin();
@@ -356,61 +354,6 @@ bool ColumnFamilyDefinition::isMinCompactionThresholdSet() const
 {
   return (min_compaction_threshold > 0 ? true : false);
 }
-
-
-int32_t ColumnFamilyDefinition::getMemtableFlushAfterMins() const
-{
-  return memtable_flush_after_mins;
-}
-
-
-void ColumnFamilyDefinition::setMemtableFlushAfterMins(int32_t flush)
-{
-  memtable_flush_after_mins= flush;
-}
-
-
-bool ColumnFamilyDefinition::isMemtableFlushAfterMinsSet() const
-{
-  return (memtable_flush_after_mins > 0 ? true : false);
-}
-
-
-double ColumnFamilyDefinition::getMemtableOperationsInMillions() const
-{
-  return memtable_operations_in_millions;
-}
-
-
-void ColumnFamilyDefinition::setMemtableOperationsInMillions(double ops)
-{
-  memtable_operations_in_millions= ops;
-}
-
-
-bool ColumnFamilyDefinition::isMemtableOperationsInMillionsSet() const
-{
-  return (memtable_operations_in_millions > 0 ? true : false);
-}
-
-
-int32_t ColumnFamilyDefinition::getMemtableThroughputInMb() const
-{
-  return memtable_throughput_in_mb;
-}
-
-
-void ColumnFamilyDefinition::setMemtableThroughputInMb(int32_t throughput)
-{
-  memtable_throughput_in_mb= throughput;
-}
-
-
-bool ColumnFamilyDefinition::isMemtableThroughputInMbSet() const
-{
-  return (memtable_throughput_in_mb > 0 ? true : false);
-}
-
 
 vector<ColumnDefinition> ColumnFamilyDefinition::getColumnMetadata() const
 {

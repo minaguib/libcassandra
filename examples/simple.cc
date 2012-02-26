@@ -23,7 +23,7 @@ int main()
 {
 
   CassandraFactory factory(host, port);
-  tr1::shared_ptr<Cassandra> client(factory.create());
+  boost::shared_ptr<Cassandra> client(factory.create());
 
   // Not really needed since the factory timeout sets all 3 by default:
   client->setRecvTimeout(timeout);

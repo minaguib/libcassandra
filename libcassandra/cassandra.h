@@ -14,8 +14,7 @@
 #include <vector>
 #include <set>
 #include <map>
-#include <tr1/memory>
-
+#include <boost/shared_ptr.hpp>
 #include "../libgenthrift/cassandra_types.h"
 
 #include "libcassandra/indexed_slices_query.h"
