@@ -13,7 +13,6 @@
 
 /* Not for public consumption, not in C space: */
 
-<<<<<<< HEAD
 #include <boost/shared_ptr.hpp>
 
 namespace libcassie {
@@ -24,16 +23,6 @@ namespace libcassie {
 		cassie_error_code_t							last_error_code;
 		char *													last_error_string;
 		boost::shared_ptr<libcassandra::Cassandra>	cassandra;
-=======
-namespace libcassie {
-
-	struct _cassie {
-		char *														host;
-		int															port;
-		cassie_error_code_t										last_error_code;
-		char *														last_error_string;
-		std::tr1::shared_ptr<libcassandra::Cassandra>	cassandra;
->>>>>>> 36495605168db2f37bd0a7a9eec0833be3b89477
 	};
 
 	struct _cassie_column {
