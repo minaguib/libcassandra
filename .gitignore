@@ -17,6 +17,8 @@ config.log
 config.status
 config.sub
 config/plugin.ac
+config/ar-lib
+config/test-driver
 config/pandora_vc_revinfo
 config/top.h
 Makefile
