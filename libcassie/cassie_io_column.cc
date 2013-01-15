@@ -21,7 +21,6 @@ namespace libcassie {
 	using namespace libcassandra;
 
 	extern "C" {
-
 		int cassie_insert_column(
 				cassie_t cassie,
 				const char * column_family,
@@ -30,6 +29,19 @@ namespace libcassie {
 				cassie_blob_t column_name,
 				cassie_blob_t value,
 				cassie_consistency_level_t level
+				) {
+            return cassie_insert_column_ttl(cassie, column_family, key, super_column_name, column_name, value, level, 0);
+        }
+
+		int cassie_insert_column_ttl(
+				cassie_t cassie,
+				const char * column_family,
+				cassie_blob_t key,
+				cassie_blob_t super_column_name,
+				cassie_blob_t column_name,
+				cassie_blob_t value,
+				cassie_consistency_level_t level,
+				int ttl
 				) {
 
 			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
@@ -48,7 +60,7 @@ namespace libcassie {
 						cpp_column_name,
 						cpp_value,
 						(org::apache::cassandra::ConsistencyLevel::type) level,
-						0
+						ttl
 						);
 				cassie_set_error(cassie, CASSIE_ERROR_NONE, NULL);
 				return(1);

@@ -178,6 +178,21 @@ namespace libcassie {
 				cassie_consistency_level_t level
 				);
 
+		/* Insert a column into cassandra with a time to live expiracy
+		 * The column will be inserted inside the given column_family
+		 * UNLESS super_column_name is specified, in which case it will be inserted inside that column_family+super_column_name
+		 */
+		int cassie_insert_column_ttl(
+				cassie_t cassie,
+				const char * column_family,
+				cassie_blob_t key,
+				cassie_blob_t super_column_name,
+				cassie_blob_t column_name,
+				cassie_blob_t value,
+				cassie_consistency_level_t level,
+				int ttl
+				);
+
 		/* Retrieves a column from cassandra
 		 * The column will be retrieved from inside the given column_family
 		 * UNLESS super_column_name is specified, in which case it will be retrieved from that column_family+super_column_name

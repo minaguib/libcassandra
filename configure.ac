@@ -13,6 +13,9 @@ AC_CONFIG_AUX_DIR(config)
 
 PANDORA_CANONICAL_TARGET(less-warnings, warnings-always-on, require-cxx, skip-visibility)
 
+m4_pattern_allow([AM_PROG_AR])
+AM_PROG_AR
+
 #shared library versioning
 CASSANDRA_LIBRARY_VERSION=2:0:0
 #                         | | |
