@@ -13,14 +13,15 @@ void crud_simple(cassie_t cassie) {
   char *v;
   int success;
 
-  success = cassie_insert_column(
+  success = cassie_insert_column_ttl(
       cassie,
       "Standard1",
       CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("age"),
       CASSIE_CTOB("20"),
-      CASSIE_CONSISTENCY_LEVEL_ONE
+      CASSIE_CONSISTENCY_LEVEL_ONE,
+      10
       );
   if (!success) {
 	  printf("Error inserting: %s\n", cassie_last_error_string(cassie));
@@ -37,14 +38,15 @@ void crud_simple(cassie_t cassie) {
       );
   printf("\tValue in column retrieved is: %s\n", v);
 
-  cassie_insert_column(
+  cassie_insert_column_ttl(
       cassie,
       "Standard1",
       CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("age"),
       CASSIE_CTOB("35"),
-      CASSIE_CONSISTENCY_LEVEL_ONE
+      CASSIE_CONSISTENCY_LEVEL_ONE,
+      10
       );
 
   v = cassie_get_column_value(
@@ -63,14 +65,15 @@ void crud_super(cassie_t cassie) {
 
   char *v;
 
-  cassie_insert_column(
+  cassie_insert_column_ttl(
       cassie,
       "Super1",
       CASSIE_CTOB("bob"),
       CASSIE_CTOB("attrs"),
       CASSIE_CTOB("age"),
       CASSIE_CTOB("20"),
-      CASSIE_CONSISTENCY_LEVEL_ONE
+      CASSIE_CONSISTENCY_LEVEL_ONE,
+      10
       );
 
   v = cassie_get_column_value(
@@ -83,14 +86,15 @@ void crud_super(cassie_t cassie) {
       );
   printf("\tValue in column retrieved is: %s\n", v);
 
-  cassie_insert_column(
+  cassie_insert_column_ttl(
       cassie,
       "Super1",
       CASSIE_CTOB("bob"),
       CASSIE_CTOB("attrs"),
       CASSIE_CTOB("age"),
       CASSIE_CTOB("35"),
-      CASSIE_CONSISTENCY_LEVEL_ONE
+      CASSIE_CONSISTENCY_LEVEL_ONE,
+      10
       );
 
   v = cassie_get_column_value(
@@ -110,24 +114,26 @@ void getcolumns_bykeys(cassie_t cassie) {
   cassie_blob_t names[3];
   cassie_column_t columns = NULL, col = NULL;
 
-  cassie_insert_column(
+  cassie_insert_column_ttl(
       cassie,
       "Standard1",
       CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("age"),
       CASSIE_CTOB("20"),
-      CASSIE_CONSISTENCY_LEVEL_ONE
+      CASSIE_CONSISTENCY_LEVEL_ONE,
+      10
       );
 
-  cassie_insert_column(
+  cassie_insert_column_ttl(
       cassie,
       "Standard1",
       CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("eyes"),
       CASSIE_CTOB("blue"),
-      CASSIE_CONSISTENCY_LEVEL_ONE
+      CASSIE_CONSISTENCY_LEVEL_ONE,
+      10
       );
 
   names[0] = CASSIE_CTOB("age");
@@ -155,25 +161,27 @@ void getcolumns_byrange(cassie_t cassie) {
 
   cassie_column_t columns = NULL, col = NULL;
 
-  cassie_insert_column(
+  cassie_insert_column_ttl(
       cassie,
       "Standard1",
       CASSIE_CTOB("bob"),
       NULL,
       CASSIE_CTOB("aaa1"),
       CASSIE_CTOB("vaaa1"),
-      CASSIE_CONSISTENCY_LEVEL_ONE
+      CASSIE_CONSISTENCY_LEVEL_ONE,
+      10
       );
 
 #define CIN(name, value)              \
-  cassie_insert_column(               \
+  cassie_insert_column_ttl(               \
       cassie,                         \
       "Standard1",                    \
       CASSIE_CTOB("bob"),                          \
       NULL,                           \
       CASSIE_CTOB(name),              \
       CASSIE_CTOB(value),             \
-      CASSIE_CONSISTENCY_LEVEL_ONE    \
+      CASSIE_CONSISTENCY_LEVEL_ONE,   \
+      10                               \
       );
 
   CIN("aaa1", "vaaa1")
@@ -211,14 +219,15 @@ void getsupercolumns_bykeys(cassie_t cassie) {
   int i = 0;
 
 #define SCIN(name1, name2, value)     \
-  cassie_insert_column(               \
+  cassie_insert_column_ttl(               \
       cassie,                         \
       "Super1",                       \
       CASSIE_CTOB("bob"),                          \
       CASSIE_CTOB(name1),             \
       CASSIE_CTOB(name2),             \
       CASSIE_CTOB(value),             \
-      CASSIE_CONSISTENCY_LEVEL_ONE    \
+      CASSIE_CONSISTENCY_LEVEL_ONE,   \
+      10                               \
       );
 
   SCIN("friend1", "name", "tim")
@@ -260,14 +269,15 @@ void getsupercolumns_byrange(cassie_t cassie) {
   int i = 0;
 
 #define SCIN(name1, name2, value)     \
-  cassie_insert_column(               \
+  cassie_insert_column_ttl(               \
       cassie,                         \
       "Super1",                       \
       CASSIE_CTOB("bob"),             \
       CASSIE_CTOB(name1),             \
       CASSIE_CTOB(name2),             \
       CASSIE_CTOB(value),             \
-      CASSIE_CONSISTENCY_LEVEL_ONE    \
+      CASSIE_CONSISTENCY_LEVEL_ONE,   \
+      10                               \
       );
 
   SCIN("friend1", "name", "tim")
