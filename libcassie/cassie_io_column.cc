@@ -30,8 +30,8 @@ namespace libcassie {
 				cassie_blob_t value,
 				cassie_consistency_level_t level
 				) {
-            return cassie_insert_column_ttl(cassie, column_family, key, super_column_name, column_name, value, level, 0);
-        }
+			return cassie_insert_column_ttl(cassie, column_family, key, super_column_name, column_name, value, level, 0);
+		}
 
 		int cassie_insert_column_ttl(
 				cassie_t cassie,
