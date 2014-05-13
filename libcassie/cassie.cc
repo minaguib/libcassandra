@@ -1,6 +1,6 @@
 /*
  * LibCassie
- * Copyright (C) 2010-2011 Mina Naguib
+ * Copyright (C) 2010-2014 Mina Naguib
  * All rights reserved.
  *
  * Use and distribution licensed under the BSD license. See
@@ -111,6 +111,51 @@ namespace libcassie {
 			cassie->cassandra->setSendTimeout(timeout);
 		}
 
+		int cassie_remove(
+				cassie_t cassie,
+				const char * column_family,
+				cassie_blob_t key,
+				cassie_blob_t super_column_name,
+				cassie_blob_t column_name,
+				cassie_consistency_level_t level
+				) {
+
+			org::apache::cassandra::ColumnPath col_path;
+			string cpp_key(CASSIE_BDATA(key), CASSIE_BLENGTH(key));
+
+			col_path.column_family.assign(column_family);
+			if (super_column_name != NULL) {
+				col_path.super_column.assign(CASSIE_BDATA(super_column_name), CASSIE_BLENGTH(super_column_name));
+				col_path.__isset.super_column = true;
+			}
+			if (column_name != NULL) {
+				col_path.column.assign(CASSIE_BDATA(column_name), CASSIE_BLENGTH(column_name));
+				col_path.__isset.column = true;
+			}
+
+			try {
+				cassie->cassandra->remove(
+						cpp_key,
+						col_path,
+						(org::apache::cassandra::ConsistencyLevel::type) level
+						);
+				cassie_set_error(cassie, CASSIE_ERROR_NONE, NULL);
+				return(1);
+			}
+			catch (org::apache::cassandra::InvalidRequestException &ire) {
+				cassie_set_error(cassie, CASSIE_ERROR_INVALID_REQUEST, "Exception: %s", ire.why.c_str());
+				return(0);
+			}
+			catch (apache::thrift::transport::TTransportException &te) {
+				cassie_set_error(cassie, CASSIE_ERROR_TRANSPORT, "Exception: %s: %s", typeid(te).name(), te.what());
+				return(0);
+			}
+			catch (const std::exception& e) {
+				cassie_set_error(cassie, CASSIE_ERROR_OTHER, "Exception %s: %s", typeid(e).name(), e.what());
+				return(0);
+			}
+
+		}
 
 	} // extern "C"
 } // namespace libcassie

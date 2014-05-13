@@ -1,6 +1,6 @@
 /*
  * LibCassie
- * Copyright (C) 2010-2011 Mina Naguib
+ * Copyright (C) 2010-2014 Mina Naguib
  * All rights reserved.
  *
  * Use and distribution licensed under the BSD license.  See
@@ -81,6 +81,19 @@ namespace libcassie {
 
 		/* Sets the send timeout in ms */
 		void cassie_set_send_timeout(cassie_t cassie, int timeout);
+
+		/* Issues a removal to cassandra for the given column_family+key
+		 * If super_column_name is specified it will scope the removal to that super column
+		 * If column_name is specified it will scope the removal to that column
+		 */
+		int cassie_remove(
+				cassie_t cassie,
+				const char * column_family,
+				cassie_blob_t key,
+				cassie_blob_t super_column_name,
+				cassie_blob_t column_name,
+				cassie_consistency_level_t level
+				);
 
 		/* -----------------------------------------------------
 		 * In cassie_error.cc
@@ -251,6 +264,7 @@ namespace libcassie {
 				int count,
 				cassie_consistency_level_t level
 				);
+
 
 		/* -----------------
 		 * In cassie_io_super_column.cc
